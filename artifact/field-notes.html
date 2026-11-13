@@ -4,16 +4,16 @@
 <style>
 /* Layout: a broadcast gallery. Status bar, then the monitor wall (program large, preview and playout stack beside it), a to-scale timeline, the rundown beside comms and clocks, the patch bay and router outputs, and the notes desk last. Milbird Culture Studio identity, dark first. Monitors stay dark glass in both themes. */
 :root{
-  --ink:#0c1014; --deep:#070a0d; --paper:#e8eef2; --muted:#8b98a3; --accent:#4fd6e0; --line:#26313a; --on-accent:#06141a;
+  --ink:#000000; --deep:#060606; --paper:#f1f4f6; --muted:#8a9299; --accent:#4fd6e0; --line:#1e2226; --on-accent:#000000;
   --tally-red:#ff5a4f; --tally-green:#5fd08a; --tally-amber:#f2b84b; --on-tally:#1b171a;
-  --bezel:#040608; --screen:#0a0e12; --screen-fg:#e8eef2; --screen-dim:#7b8893; --screen-accent:#4fd6e0; --screen-line:#1f2a33;
+  --bezel:#000000; --screen:#000000; --screen-fg:#f1f4f6; --screen-dim:#7a838b; --screen-accent:#4fd6e0; --screen-line:#191d21;
   --display:"Instrument Serif",Georgia,"Times New Roman",serif;
   --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   color-scheme:dark;
 }
-@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){ --ink:#eef1f3; --deep:#e1e6ea; --paper:#10161b; --muted:#4c5a66; --accent:#0b7f8c; --line:#c3ccd3; --on-accent:#ffffff; --tally-red:#c8281e; --tally-green:#1f7a45; --tally-amber:#8f6200; --on-tally:#f2efe5; color-scheme:light } }
-:root[data-theme="light"]{ --ink:#eef1f3; --deep:#e1e6ea; --paper:#10161b; --muted:#4c5a66; --accent:#0b7f8c; --line:#c3ccd3; --on-accent:#ffffff; --tally-red:#c8281e; --tally-green:#1f7a45; --tally-amber:#8f6200; --on-tally:#f2efe5; color-scheme:light }
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){ --ink:#000000; --deep:#060606; --paper:#f1f4f6; --muted:#8a9299; --accent:#4fd6e0; --line:#1e2226; --on-accent:#000000; --tally-red:#ff5a4f; --tally-green:#5fd08a; --tally-amber:#f2b84b; --on-tally:#000000; color-scheme:dark } }
+:root[data-theme="light"]{ --ink:#000000; --deep:#060606; --paper:#f1f4f6; --muted:#8a9299; --accent:#4fd6e0; --line:#1e2226; --on-accent:#000000; --tally-red:#ff5a4f; --tally-green:#5fd08a; --tally-amber:#f2b84b; --on-tally:#000000; color-scheme:dark }
 
 *{box-sizing:border-box}
 body{background:var(--ink);color:var(--paper);font-family:var(--body);font-size:16px;line-height:1.55;
@@ -47,6 +47,27 @@ h1 em{color:var(--accent)}
 .panel > .hd{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 14px;padding:9px 14px;border-bottom:1px solid var(--line)}
 .panel > .hd h2{margin:0;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper)}
 .panel > .bd{padding:14px;display:flex;flex-direction:column;gap:12px}
+
+/* distribution desk */
+.dist{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.ch{border:1px solid var(--line);background:var(--ink);padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.ch .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ch .nm{font-family:var(--display);font-size:24px;line-height:1}
+.ch .st{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.ch[data-state="live"] .st{background:var(--tally-red);border-color:var(--tally-red);color:var(--on-tally)}
+.ch[data-state="queued"] .st,.ch[data-state="sending"] .st{border-color:var(--tally-amber);color:var(--tally-amber)}
+.ch[data-state="sent"] .st{background:var(--tally-green);border-color:var(--tally-green);color:var(--on-tally)}
+.ch small{color:var(--muted);font-size:13px;line-height:1.4}
+.ch .bar{height:3px;background:var(--line);overflow:hidden}
+.ch .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width 1.1s linear}
+.ch[data-state="sending"] .bar i,.ch[data-state="sent"] .bar i,.ch[data-state="live"] .bar i{width:100%}
+.go{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:9px 12px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;text-align:center;text-decoration:none}
+.go:hover{background:var(--accent);color:var(--on-accent)}
+.go[disabled]{border-color:var(--line);color:var(--muted);cursor:default;background:transparent}
+.go.all{background:var(--accent);color:var(--on-accent);font-weight:500;padding:11px 16px}
+.distbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px}
+.distbar p{margin:0;color:var(--muted);font-size:13.5px;max-width:70ch}
+@media (prefers-reduced-motion: reduce){ .ch .bar i{transition:none} }
 
 /* monitor wall */
 .wall{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:18px;align-items:start}
@@ -186,7 +207,7 @@ footer strong{color:var(--paper);font-weight:500}
     </div>
     <ul class="lamps" aria-label="Status lights">
       <li class="lamp g">Cut v2 rendered</li>
-      <li class="lamp a">YouTube: not yet posted</li>
+      <li class="lamp g">YouTube: live</li>
       <li class="lamp">On air</li>
     </ul>
   </div>
@@ -236,6 +257,24 @@ footer strong{color:var(--paper);font-weight:500}
       </section>
     </div>
   </div>
+
+  <section class="panel" aria-labelledby="h-dist">
+    <div class="hd"><h2 id="h-dist">Distribution desk</h2><span class="lbl">Demo mode · only YouTube is real</span></div>
+    <div class="bd">
+      <div class="distbar">
+        <p>One film, every channel. YouTube is live. The other buttons show how publishing will work; in this demo they send nothing.</p>
+        <button type="button" class="go all" id="go-all">Publish everywhere</button>
+      </div>
+      <div class="dist" id="dist">
+        <div class="ch" data-state="live"><div class="top"><span class="nm">YouTube</span><span class="st">Live</span></div><div class="bar"><i></i></div><small>Jay+1 channel. The film is up.</small><a class="go" href="https://youtu.be/ZP9PZGTm5_E" target="_blank" rel="noopener">Watch the film</a></div>
+        <div class="ch" data-state="ready"><div class="top"><span class="nm">Milbird.com</span><span class="st">Ready</span></div><div class="bar"><i></i></div><small>File it in the hackathon library as record 22.</small><button type="button" class="go" id="ch-milbird" data-done="Filed (demo)">Add to Milbird.com</button></div>
+        <div class="ch" data-state="ready"><div class="top"><span class="nm">Instagram</span><span class="st">Ready</span></div><div class="bar"><i></i></div><small>Vertical recut as a Reel, captions burned in.</small><button type="button" class="go" id="ch-ig" data-done="Posted (demo)">Post Reel</button></div>
+        <div class="ch" data-state="ready"><div class="top"><span class="nm">TikTok</span><span class="st">Ready</span></div><div class="bar"><i></i></div><small>Same vertical cut, cold open first.</small><button type="button" class="go" id="ch-tt" data-done="Posted (demo)">Post to TikTok</button></div>
+        <div class="ch" data-state="ready"><div class="top"><span class="nm">LinkedIn</span><span class="st">Ready</span></div><div class="bar"><i></i></div><small>Landscape cut with the field notes as the post.</small><button type="button" class="go" id="ch-li" data-done="Posted (demo)">Post to LinkedIn</button></div>
+        <div class="ch" data-state="ready"><div class="top"><span class="nm">X</span><span class="st">Ready</span></div><div class="bar"><i></i></div><small>Thirty seconds, one line, one link.</small><button type="button" class="go" id="ch-x" data-done="Posted (demo)">Post to X</button></div>
+      </div>
+    </div>
+  </section>
 
   <section class="panel" aria-labelledby="h-tl">
     <div class="hd"><h2 id="h-tl">Timeline</h2><span class="lbl">Cut v2 · 8 cues · to scale</span></div>
@@ -332,7 +371,7 @@ footer strong{color:var(--paper);font-weight:500}
     <section class="panel" aria-labelledby="h-out">
       <div class="hd"><h2 id="h-out">Router · outputs</h2><span class="lbl">Where it goes</span></div>
       <ul class="outs">
-        <li><span class="lbl">Out 1</span><div><a href="https://www.youtube.com/@jayplusone" target="_blank" rel="noopener">youtube.com/@jayplusone</a><small>The Jay+1 channel. This film is uploading and is not posted yet.</small></div></li>
+        <li><span class="lbl">Out 1</span><div><a href="https://www.youtube.com/@jayplusone" target="_blank" rel="noopener">youtube.com/@jayplusone</a><small>The Jay+1 channel. The film is live: <a href="https://youtu.be/ZP9PZGTm5_E" target="_blank" rel="noopener">youtu.be/ZP9PZGTm5_E</a>.</small></div></li>
         <li><span class="lbl">Out 2</span><div><a href="https://github.com/jymiller/hack-mlh-nov13" target="_blank" rel="noopener">github.com/jymiller/hack-mlh-nov13</a><small>Source for the film and this page.</small></div></li>
         <li><span class="lbl">Out 3</span><div><a href="https://milbird.com/hackathons" target="_blank" rel="noopener">The Milbird Lab</a><small>John's hackathon projects and AI experiments.</small></div></li>
         <li><span class="lbl">Out 4</span><div><a href="https://milbird.com/field-notes" target="_blank" rel="noopener">Milbird Field Notes</a><small>Field reports from earlier rooms:
@@ -415,5 +454,21 @@ footer strong{color:var(--paper);font-weight:500}
     show('pvw', cues[n]);
   }
   cues.forEach(function(c, i){ c.addEventListener('click', function(){ take(i); }); });
+})();
+(function(){
+  var btns = Array.prototype.slice.call(document.querySelectorAll('#dist button.go'));
+  function send(b){
+    if (b.disabled) return;
+    var ch = b.closest('.ch'), st = ch.querySelector('.st');
+    b.disabled = true; ch.dataset.state = 'queued'; st.textContent = 'Queued'; b.textContent = 'Queued';
+    setTimeout(function(){ ch.dataset.state = 'sending'; st.textContent = 'Sending'; b.textContent = 'Sending'; }, 350);
+    setTimeout(function(){ ch.dataset.state = 'sent'; st.textContent = 'Demo'; b.textContent = b.dataset.done; }, 1600);
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ send(b); }); });
+  var all = document.getElementById('go-all');
+  all.addEventListener('click', function(){
+    btns.forEach(function(b, i){ setTimeout(function(){ send(b); }, i * 260); });
+    all.disabled = true; all.textContent = 'Published everywhere (demo)';
+  });
 })();
 </script>
