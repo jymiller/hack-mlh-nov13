@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #241e22; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #241e22; color: #f2efe5; font-family: "DM Sans", Arial, sans-serif; }
+      .mono { font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .16em; font-size: 26px; }
+      #block { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #f0a18b; transform-origin: left center; }
+      #date { position: absolute; left: 140px; top: 150px; color: #f0a18b; }
+      #place { position: absolute; right: 140px; top: 150px; color: #c5bcc0; }
+      #rule { position: absolute; left: 140px; top: 210px; width: 1640px; height: 2px; background: #57494f; transform-origin: left center; }
+      #jay { position: absolute; left: 132px; top: 300px; font-family: "Instrument Serif", Georgia, serif; font-size: 300px; line-height: 1; letter-spacing: -.02em; }
+      #plus { color: #f0a18b; display: inline-block; }
+      #fn { position: absolute; left: 140px; top: 620px; font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 150px; line-height: 1; color: #f0a18b; }
+      #event { position: absolute; left: 140px; top: 850px; font-size: 44px; font-weight: 500; letter-spacing: -.02em; }
+      #tag { position: absolute; left: 140px; top: 925px; color: #c5bcc0; }
+      #end1 { position: absolute; left: 0; top: 380px; width: 1920px; text-align: center; font-family: "Instrument Serif", Georgia, serif; font-size: 170px; line-height: 1; }
+      #end2 { position: absolute; left: 0; top: 590px; width: 1920px; text-align: center; color: #f0a18b; }
+      #end3 { position: absolute; left: 0; top: 660px; width: 1920px; text-align: center; color: #c5bcc0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1920" data-height="1080">
+      <div id="date" class="clip mono" data-start="0" data-duration="7" data-track-index="0">Fri 13 Nov 2026</div>
+      <div id="place" class="clip mono" data-start="0" data-duration="7" data-track-index="1">Bright Data &middot; San Francisco</div>
+      <div id="rule" class="clip" data-start="0" data-duration="7" data-track-index="2"></div>
+      <div id="jay" class="clip" data-start="0" data-duration="7" data-track-index="3">Jay<span id="plus">+</span>1</div>
+      <div id="fn" class="clip" data-start="0" data-duration="7" data-track-index="4">Field Notes</div>
+      <div id="event" class="clip" data-start="0" data-duration="7" data-track-index="5">AIE x MLH Hackathon @ Code Summit</div>
+      <div id="tag" class="clip mono" data-start="0" data-duration="7" data-track-index="6">One person, plus one intelligence</div>
+      <div id="block" class="clip" data-start="0" data-duration="10" data-track-index="7"></div>
+      <div id="end1" class="clip" data-start="7" data-duration="3" data-track-index="8">Jay+1</div>
+      <div id="end2" class="clip mono" data-start="7" data-duration="3" data-track-index="9">youtube.com/@jayplusone</div>
+      <div id="end3" class="clip mono" data-start="7" data-duration="3" data-track-index="10">A Milbird production</div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#block", { scaleX: 1 }, 0);
+      tl.to("#block", { scaleX: 0, transformOrigin: "right center", duration: 0.7, ease: "power4.inOut" }, 0.25);
+      tl.fromTo("#rule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 0.6);
+      tl.fromTo(["#date", "#place"], { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.9);
+      tl.fromTo("#jay", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.8, ease: "power4.out" }, 0.8);
+      tl.fromTo("#plus", { rotation: -180, scale: 0.2 }, { rotation: 0, scale: 1, duration: 0.9, ease: "back.out(2)" }, 1.1);
+      tl.fromTo("#fn", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 1.7);
+      tl.fromTo("#event", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 2.5);
+      tl.fromTo("#tag", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, 3.0);
+      tl.to("#jay", { x: 24, duration: 3.6, ease: "none" }, 2.4);
+      tl.set("#block", { transformOrigin: "left center" }, 6.2);
+      tl.to("#block", { scaleX: 1, duration: 0.55, ease: "power4.in" }, 6.4);
+      tl.to("#block", { scaleX: 0, transformOrigin: "right center", duration: 0.6, ease: "power4.out" }, 7.05);
+      tl.fromTo("#end1", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 7.3);
+      tl.fromTo(["#end2", "#end3"], { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.15, ease: "power2.out" }, 7.7);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

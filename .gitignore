@@ -17,3 +17,19 @@ venv/
 
 # prep notes stay local: the judges' repo holds only this event's build
 prep/
+
+# video: no footage or renders in the public repo
+video/**/renders/
+video/**/media/
+video/**/snaps/
+*.mp4
+*.MOV
+*.mov
+media/
+
+# video sources and renders stay local (raw footage, other people's faces)
+video/**/media/
+video/**/renders/
+*.mp4
+*.MOV
+video/**/.hyperframes/
