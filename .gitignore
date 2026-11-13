@@ -1,0 +1,19 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+node_modules/
+.next/
+dist/
+build/
+coverage/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.wrangler/
+.dev.vars
+*.log
+
+# prep notes stay local: the judges' repo holds only this event's build
+prep/
