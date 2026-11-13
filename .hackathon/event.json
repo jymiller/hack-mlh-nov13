@@ -4,7 +4,7 @@
   "name": "AIE x MLH Hackathon @ Code Summit",
   "date": "2026-11-13",
   "timezone": "America/Los_Angeles",
-  "venue": "San Francisco, CA (address shown on Luma after approval)",
+  "venue": "Bright Data, 625 2nd St, San Francisco, CA 94107",
   "participation_state": "accepted",
   "official_sources": [
     "https://www.mlh.com/events/aie-x-mlh-hackathon-code-summit",
@@ -19,16 +19,46 @@
     "event_wrap": "18:00"
   },
   "prizes": [
-    {"award": "Best Overall Hack", "reward": "$1000 + AI Engineer and MLH swag bags"},
-    {"award": "Best Use of System One Models", "reward": "$500 + swag bags"},
-    {"award": "Cleanest Use of a Software Factory", "reward": "$500 + swag bags"},
-    {"award": "Best Demo Video Using HyperFrames", "reward": "DJI Osmo Pocket 3 Creator Combo"},
-    {"award": "Best Use of Gemini API", "reward": "MLH swag kits"},
-    {"award": "Best Use of Tiger Data", "reward": "Stream Deck Mini"},
-    {"award": "Sentry Raffle", "reward": "Redragon mechanical keyboard"},
-    {"award": "Best Use of Snowflake", "reward": "Arduino Student Kit"},
-    {"award": "Best Use of DigitalOcean", "reward": "Retro wireless mouse"},
-    {"award": "Best Use of Bright Data", "reward": "$50 Amazon gift card per winner"}
+    {
+      "award": "Best Overall Hack",
+      "reward": "$1000 + AI Engineer and MLH swag bags"
+    },
+    {
+      "award": "Best Use of System One Models",
+      "reward": "$500 + swag bags"
+    },
+    {
+      "award": "Cleanest Use of a Software Factory",
+      "reward": "$500 + swag bags"
+    },
+    {
+      "award": "Best Demo Video Using HyperFrames",
+      "reward": "DJI Osmo Pocket 3 Creator Combo"
+    },
+    {
+      "award": "Best Use of Gemini API",
+      "reward": "MLH swag kits"
+    },
+    {
+      "award": "Best Use of Tiger Data",
+      "reward": "Stream Deck Mini"
+    },
+    {
+      "award": "Sentry Raffle",
+      "reward": "Redragon mechanical keyboard"
+    },
+    {
+      "award": "Best Use of Snowflake",
+      "reward": "Arduino Student Kit"
+    },
+    {
+      "award": "Best Use of DigitalOcean",
+      "reward": "Retro wireless mouse"
+    },
+    {
+      "award": "Best Use of Bright Data",
+      "reward": "$50 Amazon gift card per winner"
+    }
   ],
   "overall_judging": "unknown: no rubric published",
   "notes": [

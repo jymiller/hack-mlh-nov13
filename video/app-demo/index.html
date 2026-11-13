@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #000; color: #f2efe5; }
+      #cam { position: absolute; left: 0; top: 0; width: 1920px; height: 2700px; transform-origin: 0 0; }
+      .pg { position: absolute; left: 0; top: 0; width: 1920px; height: 2700px; background-size: 1920px 2700px; background-repeat: no-repeat; }
+      #p0 { background-image: url(media/s0.png); }
+      #p1 { background-image: url(media/s1.png); }
+      #p2 { background-image: url(media/s2.png); }
+      .mono { font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .14em; }
+      #tag { position: absolute; left: 70px; top: 56px; font-size: 30px; font-weight: 600; color: #241e22; background: #f0a18b; padding: 10px 22px; }
+      #grad { position: absolute; left: 0; top: 640px; width: 1920px; height: 440px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.93) 62%); }
+      .line { position: absolute; left: 110px; width: 1700px; display: flex; align-items: baseline; gap: 34px; }
+      .line .who { font-size: 30px; font-weight: 600; width: 110px; flex: none; }
+      .plus .who { color: #f0a18b; }
+      .plus .tx { font-family: "IBM Plex Mono", monospace; font-size: 58px; font-weight: 500; color: #f0a18b; letter-spacing: -.02em; }
+      .jay .who { color: #c5bcc0; }
+      .jay .tx { font-family: "Instrument Serif", Georgia, serif; font-size: 112px; line-height: 1; color: #f2efe5; }
+      #cur { position: absolute; left: 0; top: 0; width: 0; height: 0; border-left: 34px solid #f2efe5; border-top: 22px solid transparent; border-bottom: 22px solid transparent; transform-origin: 0 50%; filter: drop-shadow(0 0 6px rgba(0,0,0,.9)); }
+      #ring { position: absolute; left: 0; top: 0; width: 120px; height: 120px; margin: -60px 0 0 -60px; border: 6px solid #f0a18b; border-radius: 60px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="7.6" data-width="1920" data-height="1080">
+      <div id="cam" class="clip" data-start="0" data-duration="7.6" data-track-index="0">
+        <div id="p0" class="pg"></div>
+        <div id="p1" class="pg"></div>
+        <div id="p2" class="pg"></div>
+      </div>
+      <div id="grad" class="clip" data-start="0" data-duration="7.6" data-track-index="1"></div>
+      <div id="tag" class="clip mono" data-start="0" data-duration="7.6" data-track-index="2">Using the app</div>
+      <div id="l1" class="clip line plus" style="top: 930px" data-start="0.2" data-duration="1.7" data-track-index="3"><span class="who mono">+1</span><span class="tx">We built a control room.</span></div>
+      <div id="l2" class="clip line jay" style="top: 890px" data-start="1.9" data-duration="1.9" data-track-index="4"><span class="who mono">JAY</span><span class="tx">Take cue three.</span></div>
+      <div id="l3" class="clip line jay" style="top: 800px" data-start="3.9" data-duration="3.7" data-track-index="5"><span class="who mono">JAY</span><span class="tx">Publish everywhere.</span></div>
+      <div id="l4" class="clip line plus" style="top: 940px" data-start="5.4" data-duration="2.2" data-track-index="6"><span class="who mono">+1</span><span class="tx">Only YouTube is real. For now.</span></div>
+      <div id="ring" class="clip" data-start="0" data-duration="7.6" data-track-index="7"></div>
+      <div id="cur" class="clip" data-start="0" data-duration="7.6" data-track-index="8"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const K = 1.708, X = -680;
+      tl.set("#cam", { scale: K, x: X, y: -333 }, 0);
+      tl.set(["#p1", "#p2"], { opacity: 0 }, 0);
+      tl.set("#ring", { x: 258, y: 473, scale: 0, opacity: 0 }, 0);
+      tl.set("#cur", { x: 1500, y: 900, rotation: -120 }, 0);
+      tl.fromTo("#l1", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 0.3);
+      // pan down to the rundown, click cue three
+      tl.to("#cam", { y: -2366, duration: 0.9, ease: "power3.inOut" }, 0.8);
+      tl.to("#cur", { x: 258, y: 473, duration: 0.8, ease: "power2.inOut" }, 1.1);
+      tl.fromTo("#l2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 2.0);
+      tl.to("#ring", { scale: 1, opacity: 1, duration: 0.08 }, 2.3);
+      tl.to("#ring", { scale: 1.9, opacity: 0, duration: 0.4, ease: "power2.out" }, 2.38);
+      tl.set("#p1", { opacity: 1 }, 2.34);
+      // whip back up to the monitors: program shows THE MARK
+      tl.to("#cam", { y: -333, duration: 0.5, ease: "power4.inOut" }, 2.7);
+      tl.to("#cur", { x: 1100, y: 620, duration: 0.5, ease: "power2.inOut" }, 2.7);
+      // down to the distribution desk, press Publish everywhere
+      tl.to("#cam", { y: -1221, duration: 0.6, ease: "power3.inOut" }, 3.7);
+      tl.fromTo("#l3", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 4.0);
+      tl.to("#cur", { x: 1723, y: 152, duration: 0.6, ease: "power2.inOut" }, 4.1);
+      tl.set("#ring", { x: 1723, y: 152, scale: 0, opacity: 0 }, 4.6);
+      tl.to("#ring", { scale: 1, opacity: 1, duration: 0.08 }, 4.8);
+      tl.to("#ring", { scale: 1.9, opacity: 0, duration: 0.4, ease: "power2.out" }, 4.88);
+      tl.to("#p2", { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 4.9);
+      tl.to("#cam", { scale: 1.78, x: -730, y: -1275, duration: 2.6, ease: "none" }, 5.0);
+      tl.fromTo("#l4", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 5.5);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
