@@ -48,6 +48,16 @@ h1 em{color:var(--accent)}
 .panel > .hd h2{margin:0;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper)}
 .panel > .bd{padding:14px;display:flex;flex-direction:column;gap:12px}
 
+/* screening room */
+.scr{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:14px;align-items:start}
+.scr video{display:block;width:100%;aspect-ratio:16/9;background:var(--bezel);border-top:4px solid var(--tally-red)}
+.reels{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.reel{width:100%;display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:10px 12px;border:1px solid var(--line);background:var(--ink);color:var(--paper);cursor:pointer;text-align:left;font-family:var(--body);font-size:15px}
+.reel span{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;color:var(--muted);white-space:nowrap}
+.reel:hover{border-color:var(--accent)}
+.reel[aria-pressed="true"]{border-color:var(--tally-red);box-shadow:inset 3px 0 0 var(--tally-red)}
+@media (max-width:760px){ .scr{grid-template-columns:1fr} }
+
 /* distribution desk */
 .dist{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .ch{border:1px solid var(--line);background:var(--ink);padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
@@ -258,6 +268,23 @@ footer strong{color:var(--paper);font-weight:500}
     </div>
   </div>
 
+  <section class="panel" aria-labelledby="h-scr">
+    <div class="hd"><h2 id="h-scr">Screening room</h2><span class="lbl">Every reel made at the hackathon</span></div>
+    <div class="bd">
+      <div class="scr">
+        <video id="player" controls playsinline preload="metadata" poster="media/poster.jpg" src="media/full-film.mp4"></video>
+        <ul class="reels" id="reels">
+          <li><button type="button" class="reel" aria-pressed="true" data-src="media/full-film.mp4">The full film <span>1:21</span></button></li>
+          <li><button type="button" class="reel" aria-pressed="false" data-src="media/opening.mp4">Movie opening <span>0:14</span></button></li>
+          <li><button type="button" class="reel" aria-pressed="false" data-src="media/directors-cut.mp4">Director&rsquo;s cut <span>0:34</span></button></li>
+          <li><button type="button" class="reel" aria-pressed="false" data-src="media/using-the-app.mp4">Using the app <span>0:08</span></button></li>
+          <li><button type="button" class="reel" aria-pressed="false" data-src="media/library-ending.mp4">Filed in the library <span>0:10</span></button></li>
+          <li><button type="button" class="reel" aria-pressed="false" data-src="media/closing.mp4">Closing credits <span>0:16</span></button></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="panel" aria-labelledby="h-dist">
     <div class="hd"><h2 id="h-dist">Distribution desk</h2><span class="lbl">Demo mode · only YouTube is real</span></div>
     <div class="bd">
@@ -373,6 +400,7 @@ footer strong{color:var(--paper);font-weight:500}
       <ul class="outs">
         <li><span class="lbl">Out 1</span><div><a href="https://www.youtube.com/@jayplusone" target="_blank" rel="noopener">youtube.com/@jayplusone</a><small>The Jay+1 channel. The film is live: <a href="https://youtu.be/ZP9PZGTm5_E" target="_blank" rel="noopener">youtu.be/ZP9PZGTm5_E</a>.</small></div></li>
         <li><span class="lbl">Out 2</span><div><a href="https://github.com/jymiller/hack-mlh-nov13" target="_blank" rel="noopener">github.com/jymiller/hack-mlh-nov13</a><small>Source for the film and this page.</small></div></li>
+        <li><span class="lbl">Event</span><div><a href="https://www.mlh.com/events/aie-x-mlh-hackathon-code-summit" target="_blank" rel="noopener">AIE x MLH Hackathon @ Code Summit</a><small>Major League Hacking. Where this was built and submitted.</small></div></li>
         <li><span class="lbl">Out 3</span><div><a href="https://milbird.com/hackathons" target="_blank" rel="noopener">The Milbird Lab</a><small>John's hackathon projects and AI experiments.</small></div></li>
         <li><span class="lbl">Out 4</span><div><a href="https://milbird.com/field-notes" target="_blank" rel="noopener">Milbird Field Notes</a><small>Field reports from earlier rooms:
           <a href="https://milbird.com/field-notes/ai-agents-data-teams-september-28" target="_blank" rel="noopener">28 Sep</a>,
@@ -470,5 +498,14 @@ footer strong{color:var(--paper);font-weight:500}
     btns.forEach(function(b, i){ setTimeout(function(){ send(b); }, i * 260); });
     all.disabled = true; all.textContent = 'Published everywhere (demo)';
   });
+})();
+(function(){
+  var v = document.getElementById('player');
+  var rs = Array.prototype.slice.call(document.querySelectorAll('#reels .reel'));
+  rs.forEach(function(b){ b.addEventListener('click', function(){
+    rs.forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    v.removeAttribute('poster'); v.src = b.dataset.src; v.load();
+    var p = v.play(); if (p && p.catch) p.catch(function(){});
+  }); });
 })();
 </script>

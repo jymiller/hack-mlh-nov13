@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #241e22; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #241e22; color: #f2efe5; font-family: "DM Sans", Arial, sans-serif; }
+      #root div, #root span { position: absolute; }
+      #root span.in { position: static; }
+      .mono { font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .14em; white-space: nowrap; }
+      .serif { font-family: "Instrument Serif", Georgia, serif; white-space: nowrap; }
+
+      /* ---------- scene 1: the control room ---------- */
+      #s1 { left: 0; top: 0; width: 1920px; height: 1080px; background: #241e22; }
+      #pgm-chip { left: 256px; top: 38px; height: 40px; padding: 0 16px; line-height: 40px; font-size: 20px; background: #ff5a4f; color: #1b171a; font-weight: 500; }
+      #pgm-src { left: 420px; top: 38px; line-height: 40px; font-size: 20px; color: #c5bcc0; }
+      #onair { left: 1264px; top: 38px; width: 400px; text-align: right; line-height: 40px; font-size: 20px; color: #ff5a4f; }
+      #mon { left: 256px; top: 92px; width: 1408px; height: 800px; background: #000; border: 2px solid #57494f; overflow: hidden; transform-origin: 50% 50%; }
+      #mon-img { left: 0; top: 8px; width: 1408px; height: 792px; background: #000 url(media/artifact.png) 0 0 / 1408px 792px no-repeat; transform-origin: 50% 40%; }
+      #tally { left: 0; top: 0; width: 1408px; height: 8px; background: #ff5a4f; }
+      #plus1 { left: 256px; top: 944px; font-size: 26px; color: #f0a18b; line-height: 80px; }
+      #take { left: 326px; top: 932px; font-family: "IBM Plex Mono", monospace; font-size: 76px; line-height: 96px; letter-spacing: -.01em; white-space: nowrap; color: #f2efe5; }
+      #cursor { left: 716px; top: 946px; width: 34px; height: 68px; background: #f0a18b; }
+      #s1-title { left: 964px; top: 918px; width: 700px; text-align: right; font-size: 68px; line-height: 76px; }
+      #s1-sub { left: 864px; top: 1002px; width: 800px; text-align: right; font-size: 18px; line-height: 24px; color: #c5bcc0; }
+
+      /* ---------- scene 2: the library page ---------- */
+      #page { left: 0; top: 0; width: 1920px; height: 1080px; background: #1b171a; transform-origin: 150px 500px; }
+      #pg-bg { left: 0; top: 0; width: 1920px; height: 1080px; background: url(media/hackathons.png) 0 0 / 1920px 1080px no-repeat; }
+      #list-cover { left: 265px; top: 501px; width: 251px; height: 579px; background: #1b171a; }
+      #strip { left: 265px; top: 501px; width: 251px; height: 579px; background: url(media/hackathons.png) -265px -501px / 1920px 1080px no-repeat; }
+      .row { left: 0; top: 0; width: 251px; height: 80px; border-bottom: 1px solid #372d32; }
+      .row .th { left: 18px; top: 15px; width: 44px; height: 48px; }
+      .row .dt { left: 75px; top: 21px; font-size: 11px; line-height: 14px; color: #a89ea3; white-space: nowrap; }
+      .row .ti { left: 75px; top: 39px; font-size: 14px; line-height: 20px; color: #f2efe5; white-space: nowrap; }
+      #oldrow { background: #1b171a; }
+      #oldrow .th { background: url(media/hackathons.png) -283px -516px / 1920px 1080px no-repeat; }
+      #newrow { left: 265px; top: 501px; background: #3b2c33; border-bottom: 1px solid #48383f; box-shadow: inset 3px 0 0 #f0a18b; transform-origin: 50% 50%; }
+      #newrow .th { background: #000 url(media/artifact.png) -42px -21px / 160px 90px no-repeat; outline: 1px solid #57494f; }
+      #newrow .ar { left: 221px; top: 27px; width: 16px; height: 16px; font-size: 16px; line-height: 16px; color: #f0a18b; }
+      #row-flash { left: 0; top: 0; width: 251px; height: 80px; background: #f2efe5; }
+      #ring { left: 265px; top: 501px; width: 251px; height: 80px; border: 2px solid #f0a18b; transform-origin: 50% 50%; }
+      .cnt { background: #1b171a; color: #b5adb0; white-space: nowrap; overflow: hidden; }
+      #cnt-top { left: 1590px; top: 348px; width: 66px; height: 20px; font-size: 11.5px; line-height: 20px; }
+      #cnt-list { left: 280px; top: 462px; width: 70px; height: 20px; font-size: 10.5px; line-height: 20px; }
+      .cnt .a { left: auto; right: 0; top: 0; }
+      #cnt-list .a { left: 3px; right: auto; }
+      .cnt .b { top: 20px; }
+      #cnt-top .b { right: 0; }
+      #cnt-list .b { left: 3px; }
+      #detail { left: 517px; top: 446px; width: 1139px; height: 634px; overflow: hidden; }
+      #detail-img { left: 0; top: 0; width: 1139px; height: 634px; background: #000 url(media/artifact.png) -373px 0 / 1885px 1060px no-repeat; }
+      #detail-edge { left: 0; top: 0; width: 6px; height: 634px; background: #f0a18b; }
+
+      /* ---------- the counter slab (screen space) ---------- */
+      #slab { left: 1000px; top: 0; width: 920px; height: 1080px; background: #241e22; border-left: 2px solid #57494f; }
+      #slab-k { left: 90px; top: 150px; font-size: 22px; line-height: 30px; color: #f0a18b; }
+      #slab-rule { left: 90px; top: 204px; width: 740px; height: 2px; background: #57494f; }
+      #slab-num { left: 78px; top: 240px; width: 520px; height: 380px; overflow: hidden; font-size: 420px; line-height: 380px; }
+      #slab-num .d0 { left: 0; top: 0; }
+      #slab-num .col { left: 178px; top: 0; width: 300px; height: 760px; }
+      #slab-num .col span { left: 0; }
+      #slab-rec { left: 92px; top: 640px; font-size: 120px; line-height: 130px; font-style: italic; color: #f0a18b; }
+      #slab-new { left: 90px; top: 842px; font-size: 22px; line-height: 30px; color: #f2efe5; }
+      #slab-ev { left: 90px; top: 884px; font-size: 18px; line-height: 26px; color: #c5bcc0; }
+
+      /* ---------- flash + lower third ---------- */
+      #flash { left: 0; top: 0; width: 1920px; height: 1080px; background: #f2efe5; }
+      #scrim { left: 0; top: 760px; width: 1920px; height: 320px; background: linear-gradient(180deg, rgba(27,23,26,0) 0%, rgba(27,23,26,.92) 45%, #1b171a 100%); }
+      #l3 { left: 120px; top: 880px; width: 1680px; height: 156px; background: #241e22; border: 1px solid #57494f; overflow: hidden; box-shadow: 0 18px 60px rgba(0,0,0,.55); }
+      #l3-bar { left: 0; top: 0; width: 16px; height: 156px; background: #f0a18b; }
+      #l3-a { left: 56px; top: 22px; font-size: 68px; line-height: 76px; }
+      #l3-a i { color: #f0a18b; }
+      #l3-b { left: 58px; top: 108px; font-size: 17px; line-height: 24px; color: #c5bcc0; }
+      #l3-url { left: 980px; top: 52px; width: 650px; text-align: right; font-size: 36px; line-height: 52px; color: #f0a18b; text-transform: none; letter-spacing: .02em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1920" data-height="1080">
+
+      <div id="s1" class="clip" data-start="0" data-duration="2.6" data-track-index="0">
+        <div id="pgm-chip" class="mono">Program</div>
+        <div id="pgm-src" class="mono">Claude Artifact</div>
+        <div id="onair" class="mono">&#9679; On air</div>
+        <div id="mon">
+          <div id="mon-img"></div>
+          <div id="tally"></div>
+        </div>
+        <div id="plus1" class="mono">+1</div>
+        <div id="take"><span class="in tk">T</span><span class="in tk">a</span><span class="in tk">k</span><span class="in tk">e</span><span class="in tk">&nbsp;</span><span class="in tk">i</span><span class="in tk">t</span><span class="in tk">.</span></div>
+        <div id="cursor"></div>
+        <div id="s1-title" class="serif">Jay+1 <i>Field Notes</i></div>
+        <div id="s1-sub" class="mono">AIE x MLH Hackathon &middot; San Francisco</div>
+      </div>
+
+      <div id="page" class="clip" data-start="2.6" data-duration="7.4" data-track-index="1">
+        <div id="pg-bg"></div>
+        <div id="list-cover"></div>
+        <div id="strip">
+          <div id="oldrow" class="row">
+            <div class="th"></div>
+            <div class="dt">Sep 21</div>
+            <div class="ti">The Looping Lab</div>
+          </div>
+        </div>
+        <div id="ring"></div>
+        <div id="newrow" class="row">
+          <div class="th"></div>
+          <div class="dt">Nov 13</div>
+          <div class="ti">Jay+1 Field Notes</div>
+          <div class="ar">&#8599;</div>
+          <div id="row-flash"></div>
+        </div>
+        <div id="cnt-top" class="cnt"><div class="roll" id="roll-top" style="left:0;top:0;width:66px;height:40px"><div class="a">21 records</div><div class="b">22 records</div></div></div>
+        <div id="cnt-list" class="cnt"><div class="roll" id="roll-list" style="left:0;top:0;width:70px;height:40px"><div class="a">21 records</div><div class="b">22 records</div></div></div>
+        <div id="detail">
+          <div id="detail-img"></div>
+          <div id="detail-edge"></div>
+        </div>
+      </div>
+
+      <div id="slab" class="clip" data-start="3.1" data-duration="3.0" data-track-index="2">
+        <div id="slab-k" class="mono">The Milbird Lab &middot; hackathon library</div>
+        <div id="slab-rule"></div>
+        <div id="slab-num" class="serif">
+          <span class="d0">2</span>
+          <div class="col" id="slab-col"><span style="top:0">1</span><span style="top:380px">2</span></div>
+        </div>
+        <div id="slab-rec" class="serif">records</div>
+        <div id="slab-new" class="mono">+ Nov 13 &middot; Jay+1 Field Notes</div>
+        <div id="slab-ev" class="mono">AIE x MLH Hackathon &middot; San Francisco</div>
+      </div>
+
+      <div id="scrim" class="clip" data-start="6.9" data-duration="3.1" data-track-index="5"></div>
+      <div id="l3" class="clip" data-start="6.9" data-duration="3.1" data-track-index="3">
+        <div id="l3-bar"></div>
+        <div id="l3-a" class="serif">Filed in <i>The Milbird Lab</i></div>
+        <div id="l3-b" class="mono">Jay+1 Field Notes &middot; Nov 13 &middot; AIE x MLH Hackathon &middot; San Francisco</div>
+        <div id="l3-url" class="mono">milbird.com/hackathons</div>
+      </div>
+
+      <div id="flash" class="clip" data-start="2.6" data-duration="0.5" data-track-index="4"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      /* ---- scene 1: program monitor, "Take it." ---- */
+      tl.fromTo("#mon", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 0.05);
+      tl.fromTo("#mon-img", { scale: 1 }, { scale: 1.035, duration: 2.5, ease: "none" }, 0.1);
+      tl.fromTo("#tally", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.45, ease: "power3.inOut" }, 0.3);
+      tl.fromTo(["#pgm-chip", "#pgm-src", "#onair"], { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" }, 0.35);
+      tl.fromTo("#s1-title", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 0.6);
+      tl.fromTo("#s1-sub", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0.85);
+      tl.fromTo("#plus1", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 1.25);
+      tl.set("#cursor", { opacity: 0, x: -390 }, 0);
+      tl.set("#cursor", { opacity: 1 }, 1.3);
+      tl.set(".tk", { opacity: 0 }, 0);
+      const chars = document.querySelectorAll(".tk");
+      chars.forEach((c, i) => {
+        tl.set(c, { opacity: 1 }, 1.45 + i * 0.06);
+        tl.set("#cursor", { x: -390 + (i + 1) * 45.6 }, 1.45 + i * 0.06);
+      });
+      tl.set("#tally", { opacity: 1 }, 0);
+      tl.set("#tally", { opacity: 0.25 }, 2.12);
+      tl.set("#tally", { opacity: 1 }, 2.24);
+      tl.set("#tally", { opacity: 0.25 }, 2.36);
+      tl.set("#tally", { opacity: 1 }, 2.48);
+
+      /* ---- the take: hard cut to the library ---- */
+      tl.fromTo("#flash", { opacity: 0.85 }, { opacity: 0, duration: 0.3, ease: "power2.out" }, 2.6);
+
+      tl.set("#page", { scale: 1, y: 0 }, 0);
+      tl.to("#page", { scale: 2, duration: 0.65, ease: "power3.inOut" }, 3.05);
+      tl.fromTo("#slab", { x: 940 }, { x: 0, duration: 0.55, ease: "power3.out" }, 3.15);
+      tl.fromTo(["#slab-k", "#slab-rule", "#slab-num", "#slab-rec"], { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: "power2.out" }, 3.4);
+
+      /* rows shove down one slot */
+      tl.fromTo("#oldrow", { opacity: 0 }, { opacity: 1, duration: 0.15, ease: "none" }, 3.8);
+      tl.fromTo("#strip", { y: 0 }, { y: 80, duration: 0.42, ease: "back.out(1.6)" }, 3.85);
+
+      /* the new record drops in and locks */
+      tl.set("#newrow", { opacity: 0, y: -150, scale: 1.14 }, 0);
+      tl.set("#newrow", { opacity: 1 }, 4.12);
+      tl.to("#newrow", { y: 0, scale: 1, duration: 0.26, ease: "power4.in" }, 4.12);
+      tl.set("#row-flash", { opacity: 0 }, 0);
+      tl.set("#row-flash", { opacity: 0.95 }, 4.38);
+      tl.to("#row-flash", { opacity: 0, duration: 0.45, ease: "power2.out" }, 4.4);
+      tl.set("#ring", { opacity: 0, scaleX: 1, scaleY: 1 }, 0);
+      tl.set("#ring", { opacity: 1 }, 4.38);
+      tl.to("#ring", { opacity: 0, scaleX: 1.14, scaleY: 1.7, duration: 0.5, ease: "power2.out" }, 4.38);
+      tl.to("#page", { y: 10, duration: 0.05, ease: "power1.out" }, 4.38);
+      tl.to("#page", { y: 0, duration: 0.3, ease: "elastic.out(1.2, 0.4)" }, 4.43);
+      tl.fromTo(["#slab-new", "#slab-ev"], { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" }, 4.45);
+
+      /* 21 records -> 22 records */
+      tl.fromTo("#slab-col", { y: 0 }, { y: -380, duration: 0.55, ease: "back.inOut(1.4)" }, 4.7);
+      tl.fromTo(["#roll-top", "#roll-list"], { y: 0 }, { y: -20, duration: 0.45, ease: "power3.inOut" }, 4.75);
+      tl.fromTo("#slab-rec", { scale: 1, transformOrigin: "left center" }, { scale: 1.06, duration: 0.12, yoyo: true, repeat: 1, ease: "power1.inOut", immediateRender: false }, 5.15);
+
+      /* pull back, artifact takes the detail panel */
+      tl.to("#slab", { x: 940, duration: 0.5, ease: "power3.in" }, 5.55);
+      tl.to("#page", { scale: 1, duration: 0.7, ease: "power3.inOut" }, 5.6);
+      tl.fromTo("#detail-img", { x: 1139 }, { x: 0, duration: 0.6, ease: "power4.out" }, 6.2);
+      tl.fromTo("#detail-edge", { x: 1139, opacity: 1 }, { x: 0, duration: 0.6, ease: "power4.out" }, 6.2);
+      tl.to("#detail-edge", { opacity: 0, duration: 0.25, ease: "none" }, 6.8);
+
+      /* lower third, then hold */
+      tl.fromTo("#scrim", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, 6.95);
+      tl.fromTo("#l3", { y: 220 }, { y: 0, duration: 0.5, ease: "power3.out" }, 6.95);
+      tl.fromTo("#l3-bar", { scaleY: 0, transformOrigin: "center bottom" }, { scaleY: 1, duration: 0.35, ease: "power2.out" }, 7.2);
+      tl.fromTo(["#l3-a", "#l3-b", "#l3-url"], { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, stagger: 0.1, ease: "power2.out" }, 7.25);
+      tl.set({}, {}, 10);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

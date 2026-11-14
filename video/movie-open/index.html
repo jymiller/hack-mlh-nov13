@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #000; color: #f2efe5; font-family: "DM Sans", Arial, sans-serif; }
+      .mono { font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .18em; }
+      .serif { font-family: "Instrument Serif", Georgia, serif; }
+      .c { position: absolute; left: 0; width: 1920px; text-align: center; }
+      #bars { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border-top: 110px solid #000; border-bottom: 110px solid #000; }
+      #logo { position: absolute; left: 148px; top: -249px; width: 1623px; height: 1478px; filter: brightness(0) invert(1); }
+      .pc { position: absolute; left: 0; top: 0; width: 1623px; height: 1478px; background: url(media/logo.png) 0 0 / 1623px 1478px no-repeat; }
+      #bt { clip-path: polygon(330px 10px, 1000px 10px, 1000px 560px, 900px 770px, 760px 770px, 640px 620px, 340px 520px); transform-origin: 700px 400px; }
+      #bl { clip-path: polygon(50px 640px, 330px 640px, 520px 800px, 745px 800px, 745px 960px, 700px 1195px, 50px 1195px); transform-origin: 420px 950px; }
+      #br { clip-path: polygon(1600px 630px, 1320px 630px, 1130px 800px, 900px 800px, 900px 960px, 950px 1195px, 1600px 1195px); transform-origin: 1230px 950px; }
+      #ht { clip-path: polygon(725px 772px, 905px 772px, 905px 950px, 725px 950px); transform-origin: 815px 860px; }
+      #wm { clip-path: polygon(60px 1196px, 1600px 1196px, 1600px 1478px, 60px 1478px); }
+      .role { top: 400px; font-size: 30px; color: #f0a18b; }
+      .name { top: 460px; font-size: 124px; line-height: 1.05; }
+      .big { font-size: 330px; line-height: 1; letter-spacing: -.02em; }
+      em { color: #f0a18b; }
+      #wipe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #f0a18b; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="14" data-width="1920" data-height="1080">
+      <div id="logo" class="clip" data-start="0" data-duration="4.1" data-track-index="1">
+        <div id="bt" class="pc"></div><div id="bl" class="pc"></div><div id="br" class="pc"></div><div id="ht" class="pc"></div><div id="wm" class="pc"></div>
+      </div>
+      <div id="j1" class="clip c mono" style="top: 895px; font-size: 28px; color: #f0a18b" data-start="2.1" data-duration="2.0" data-track-index="2">One L. We checked.</div>
+      <div id="r0" class="clip c mono role" data-start="4.1" data-duration="1.05" data-track-index="3">Milbird Media presents</div>
+      <div id="n0" class="clip c serif name" data-start="4.1" data-duration="1.05" data-track-index="4">a film <em>nobody asked for</em></div>
+      <div id="r1" class="clip c mono role" data-start="5.15" data-duration="1.05" data-track-index="5">starring</div>
+      <div id="n1" class="clip c serif name" data-start="5.15" data-duration="1.05" data-track-index="6">A Consultant Who Arrived at 2:04</div>
+      <div id="r2" class="clip c mono role" data-start="6.2" data-duration="1.05" data-track-index="7">co-starring</div>
+      <div id="n2" class="clip c serif name" data-start="6.2" data-duration="1.05" data-track-index="8">An Overconfident Autocomplete</div>
+      <div id="r3" class="clip c mono role" data-start="7.25" data-duration="1.05" data-track-index="9">and introducing</div>
+      <div id="n3" class="clip c serif name" data-start="7.25" data-duration="1.05" data-track-index="10">A Camera in a Box</div>
+      <div id="r4" class="clip c mono role" data-start="8.3" data-duration="1.05" data-track-index="11">directed by</div>
+      <div id="n4" class="clip c serif name" data-start="8.3" data-duration="1.05" data-track-index="12">A Language Model With Opinions</div>
+      <div id="r5" class="clip c mono role" data-start="9.35" data-duration="1.05" data-track-index="13">written in</div>
+      <div id="n5" class="clip c serif name" data-start="9.35" data-duration="1.05" data-track-index="14">HTML. <em>Seriously.</em></div>
+      <div id="tj" class="clip c serif big" style="top: 250px" data-start="10.4" data-duration="3.6" data-track-index="15">Jay<em>+</em>1</div>
+      <div id="tf" class="clip c serif" style="top: 590px; font-size: 170px; font-style: italic; color: #f0a18b" data-start="10.4" data-duration="3.6" data-track-index="16">Field Notes</div>
+      <div id="tm" class="clip c mono" style="top: 830px; font-size: 30px; color: #c5bcc0" data-start="10.4" data-duration="3.6" data-track-index="17">Sixty minutes. One person. Plus one intelligence.</div>
+      <div id="bars" class="clip" data-start="0" data-duration="14" data-track-index="40"></div>
+      <div id="wipe" class="clip" data-start="0" data-duration="14" data-track-index="41"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#logo", { scale: 0.5, opacity: 1 }, 0);
+      tl.set("#ht", { scale: 0 }, 0); tl.set("#wm", { opacity: 0 }, 0);
+      tl.fromTo("#bt", { y: -2200, rotation: -70 }, { y: 0, rotation: 0, duration: 0.75, ease: "power3.in" }, 0.2);
+      tl.fromTo("#bl", { x: -2600, rotation: 40 }, { x: 0, rotation: 0, duration: 0.7, ease: "power3.in" }, 0.3);
+      tl.fromTo("#br", { x: 2600, rotation: -40 }, { x: 0, rotation: 0, duration: 0.65, ease: "power3.in" }, 0.35);
+      tl.to("#logo", { x: 26, duration: 0.04 }, 1.0); tl.to("#logo", { x: -20, duration: 0.05 }, 1.04); tl.to("#logo", { x: 12, duration: 0.05 }, 1.09); tl.to("#logo", { x: 0, duration: 0.06 }, 1.14);
+      tl.to("#bt", { rotation: 9, duration: 0.12, yoyo: true, repeat: 1 }, 1.0);
+      tl.to("#bl", { rotation: -8, duration: 0.12, yoyo: true, repeat: 1 }, 1.0);
+      tl.to("#br", { rotation: 8, duration: 0.12, yoyo: true, repeat: 1 }, 1.0);
+      tl.to("#ht", { scale: 1, duration: 0.5, ease: "back.out(4)" }, 1.15);
+      tl.to("#ht", { scale: 1.25, duration: 0.14, yoyo: true, repeat: 3, ease: "power1.inOut" }, 1.8);
+      tl.to("#wm", { opacity: 1, duration: 0.35 }, 1.45);
+      tl.fromTo("#j1", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 2.3);
+      tl.to(["#logo", "#j1"], { opacity: 0, duration: 0.3 }, 3.7);
+      tl.fromTo("#r0", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 4.13);
+      tl.fromTo("#n0", { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.out" }, 4.16);
+      tl.to("#n0", { scale: 1.03, duration: 0.8, ease: "none" }, 4.32);
+      tl.fromTo("#r1", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 5.18);
+      tl.fromTo("#n1", { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.out" }, 5.21);
+      tl.to("#n1", { scale: 1.03, duration: 0.8, ease: "none" }, 5.37);
+      tl.fromTo("#r2", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 6.23);
+      tl.fromTo("#n2", { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.out" }, 6.26);
+      tl.to("#n2", { scale: 1.03, duration: 0.8, ease: "none" }, 6.42);
+      tl.fromTo("#r3", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 7.28);
+      tl.fromTo("#n3", { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.out" }, 7.31);
+      tl.to("#n3", { scale: 1.03, duration: 0.8, ease: "none" }, 7.47);
+      tl.fromTo("#r4", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 8.33);
+      tl.fromTo("#n4", { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.out" }, 8.36);
+      tl.to("#n4", { scale: 1.03, duration: 0.8, ease: "none" }, 8.52);
+      tl.fromTo("#r5", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 9.38);
+      tl.fromTo("#n5", { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.out" }, 9.41);
+      tl.to("#n5", { scale: 1.03, duration: 0.8, ease: "none" }, 9.57);
+      tl.set("#wipe", { scaleX: 0, transformOrigin: "left center" }, 0);
+      tl.to("#wipe", { scaleX: 1, duration: 0.2, ease: "power4.in" }, 10.2);
+      tl.set("#wipe", { transformOrigin: "right center" }, 10.4);
+      tl.to("#wipe", { scaleX: 0, duration: 0.4, ease: "power4.out" }, 10.42);
+      tl.fromTo("#tj", { opacity: 0, y: 100 }, { opacity: 1, y: 0, duration: 0.5, ease: "power4.out" }, 10.55);
+      tl.fromTo("#tf", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 10.9);
+      tl.fromTo("#tm", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 11.4);
+      tl.set("#wipe", { transformOrigin: "left center" }, 13.4);
+      tl.to("#wipe", { scaleX: 1, duration: 0.45, ease: "power4.in" }, 13.5);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

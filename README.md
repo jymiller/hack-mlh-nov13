@@ -26,8 +26,15 @@ desk (Milbird.com, Instagram, TikTok, LinkedIn, X) show the intended flow and ar
   montage, end-card button.
 - A 31-second cut renders in about 20 seconds, so the story was rewritten four times in under half an hour
   by editing HTML and re-rendering.
-- `video/bumper` is the 10-second series bumper, `video/stills-cut` the 31-second stills film,
-  `video/thanks` a two-second clip. Footage, photos and renders are kept out of the repo.
+- `video/field-notes` is the director-led cut with John's footage and voice; `video/director` holds the
+  treatment and the review of each cut.
+- `video/movie-open` and `video/movie-close` are the movie-style opening (animated three-bird logo, joke
+  credits) and closing credits. `video/kit-start` and `video/kit-end` are five-second reusable versions.
+- `video/app-demo` shows the control room in use; `video/outro-a`, `-b` and `-c` are three competing endings
+  that file the project into the Milbird hackathon library (A was chosen).
+- `video/bumper`, `video/stills-cut` and `video/thanks` are the earlier bumper, stills film and two-second clip.
+- Footage, photos, the logo image and renders are kept out of the repo, so the compositions need those
+  media files added locally to render. The finished videos play in the app's screening room.
 
 ## How AI was used
 

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #241e22; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #241e22; color: #f2efe5; font-family: "DM Sans", Arial, sans-serif; }
+      #root div, #root span { position: absolute; }
+      .mono { font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .14em; white-space: nowrap; }
+      .serif { font-family: "Instrument Serif", Georgia, serif; white-space: nowrap; }
+
+      /* the library page */
+      #world { left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 390px 541px; }
+      #page { left: 0; top: 0; width: 1920px; height: 1080px; background-image: url(media/hackathons.png); background-size: 1920px 1080px; }
+      #gap { left: 265px; top: 501px; width: 251px; height: 80px; background: #1b171a; }
+      #rows { left: 265px; top: 501px; width: 251px; height: 579px; background-image: url(media/hackathons.png); background-size: 1920px 1080px; background-position: -265px -501px; }
+      #newrow { left: 265px; top: 501px; width: 251px; height: 80px; background: #1b171a; border-bottom: 1px solid #54464d; }
+      #nrbar { left: 0; top: 0; width: 3px; height: 79px; background: #f0a18b; }
+      #nrthumb { left: 18px; top: 15px; width: 44px; height: 48px; background-color: #000; background-image: url(media/artifact.png); background-size: 85px 48px; background-position: -8px 0; }
+      #nrdate { left: 75px; top: 20px; font-size: 11px; line-height: 14px; color: #b9afb3; white-space: nowrap; }
+      #nrtitle { left: 75px; top: 39px; font-size: 13.5px; line-height: 18px; color: #f2efe5; white-space: nowrap; }
+      #nrnew { left: 205px; top: 32px; font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 8px; line-height: 14px; letter-spacing: .14em; color: #f0a18b; border: 1px solid #f0a18b; padding: 0 3px 0 4px; }
+      #nrflash { left: 0; top: 0; width: 251px; height: 80px; background: #f0a18b; }
+      .cnt { background: #1b171a; height: 26px; font-size: 12px; line-height: 26px; color: #b9afb3; overflow: hidden; }
+      #c1 { left: 1556px; top: 346px; width: 100px; }
+      #c2 { left: 278px; top: 460px; width: 96px; font-size: 11px; }
+      #c1 span { right: 0; top: 0; white-space: nowrap; }
+      #c2 span { left: 5px; top: 0; white-space: nowrap; }
+      .cnew { color: #f0a18b; }
+
+      #dim { left: 0; top: 0; width: 1920px; height: 1080px; background: #241e22; }
+
+      /* the loot */
+      #card { left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 540px; }
+      #shot { left: 0; top: 0; width: 1920px; height: 1080px; background-color: #000; background-image: url(media/artifact.png); background-size: 1920px 1080px; }
+      #frame { left: -16px; top: -16px; width: 1952px; height: 1112px; border: 16px solid #f0a18b; }
+      #exlabel { left: -16px; top: -112px; height: 96px; padding: 0 44px; background: #f0a18b; color: #241e22; font-weight: 600; font-size: 52px; line-height: 96px; }
+      #excase { right: -16px; top: -92px; font-size: 36px; line-height: 60px; color: #c5bcc0; }
+      #excap { left: -16px; top: 1124px; font-size: 44px; line-height: 60px; color: #f2efe5; white-space: nowrap; }
+      #excap b { font-weight: 500; }
+      #excap i { font-style: normal; color: #c5bcc0; }
+      #stamp { right: 110px; top: 560px; font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 250px; line-height: 1.15; letter-spacing: .04em; color: #f0a18b; border: 20px solid #f0a18b; padding: 10px 76px; background: rgba(36,30,34,.6); white-space: nowrap; transform-origin: center center; }
+
+      #chip { left: 64px; top: 968px; height: 52px; padding: 0 22px; background: #241e22; border: 2px solid #f0a18b; color: #f0a18b; font-size: 22px; line-height: 48px; font-weight: 500; }
+
+      /* two voices */
+      .who { left: 0; top: 0; font-size: 22px; line-height: 30px; color: #c5bcc0; }
+      #l1 { left: 1250px; top: 360px; width: 620px; height: 110px; }
+      #l1 .tx { left: 0; top: 44px; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 46px; line-height: 60px; color: #f0a18b; white-space: nowrap; }
+      #l2 { left: 1250px; top: 540px; width: 620px; height: 130px; }
+      #l2 .tx { left: 0; top: 40px; font-size: 68px; line-height: 80px; color: #f2efe5; }
+
+      /* final panel */
+      #fin { left: 720px; top: 0; width: 1200px; height: 1080px; background: #241e22; border-left: 2px solid #57494f; }
+      #f1 { left: 100px; top: 196px; font-size: 26px; line-height: 34px; color: #f0a18b; }
+      #f2 { left: 96px; top: 250px; font-size: 136px; line-height: 150px; letter-spacing: -.01em; }
+      #f3 { left: 100px; top: 410px; font-size: 64px; line-height: 76px; font-style: italic; color: #f0a18b; }
+      #f4 { left: 100px; top: 540px; width: 1000px; height: 2px; background: #57494f; transform-origin: left center; }
+      #f5 { left: 100px; top: 590px; font-size: 78px; line-height: 96px; font-weight: 500; letter-spacing: -.02em; white-space: nowrap; }
+      #f5u { left: 100px; top: 690px; width: 836px; height: 5px; background: #f0a18b; transform-origin: left center; }
+      #f6 { left: 100px; top: 748px; font-size: 22px; line-height: 30px; color: #c5bcc0; }
+      #f7 { left: 100px; top: 790px; font-size: 22px; line-height: 30px; color: #c5bcc0; }
+      #f8 { left: 840px; top: 880px; font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 64px; line-height: 1.15; letter-spacing: .04em; color: #f0a18b; border: 6px solid #f0a18b; padding: 2px 22px; white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1920" data-height="1080">
+      <div id="world" class="clip" data-start="0" data-duration="10" data-track-index="0">
+        <div id="page"></div>
+        <div id="gap"></div>
+        <div id="rows"></div>
+        <div id="newrow">
+          <div id="nrthumb"></div>
+          <div id="nrdate">Nov 13</div>
+          <div id="nrtitle">Jay+1 Field Notes</div>
+          <div id="nrnew">NEW</div>
+          <div id="nrbar"></div>
+          <div id="nrflash"></div>
+        </div>
+        <div id="c1" class="cnt"><span class="cold">21 records</span><span class="cnew">22 records</span></div>
+        <div id="c2" class="cnt"><span class="cold">21 records</span><span class="cnew">22 records</span></div>
+      </div>
+      <div id="dim" class="clip" data-start="0" data-duration="10" data-track-index="1"></div>
+      <div id="l1" class="clip" data-start="0" data-duration="10" data-track-index="2"><span class="who mono">+1</span><span class="tx">Evidence logged.</span></div>
+      <div id="l2" class="clip" data-start="0" data-duration="10" data-track-index="3"><span class="who mono">JAY</span><span class="tx serif">Add it to the library.</span></div>
+      <div id="card" class="clip" data-start="0" data-duration="10" data-track-index="4">
+        <div id="shot"></div>
+        <div id="frame"></div>
+        <div id="exlabel" class="mono">Exhibit 22</div>
+        <div id="excase" class="mono">The loot &middot; 13 Nov 2026</div>
+        <div id="excap"><b>Jay+1 Field Notes</b> <i>&nbsp;&middot;&nbsp; AIE x MLH Hackathon &middot; San Francisco</i></div>
+        <div id="stamp">FILED</div>
+      </div>
+      <div id="chip" class="clip mono" data-start="0" data-duration="10" data-track-index="5">The loot &middot; what the hour made</div>
+      <div id="fin" class="clip" data-start="0" data-duration="10" data-track-index="6">
+        <div id="f1" class="mono">Record 22 &middot; The Milbird Lab</div>
+        <div id="f2" class="serif">Jay+1 Field Notes</div>
+        <div id="f3" class="serif">filed in the library.</div>
+        <div id="f4"></div>
+        <div id="f5">milbird.com/hackathons</div>
+        <div id="f5u"></div>
+        <div id="f6" class="mono">AIE x MLH Hackathon &middot; San Francisco &middot; 13 Nov 2026</div>
+        <div id="f7" class="mono">John Y Miller &middot; A Milbird production</div>
+        <div id="f8">FILED</div>
+      </div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // initial states
+      gsap.set("#world", { scale: 1 });
+      gsap.set("#rows", { y: 0 });
+      gsap.set("#newrow", { opacity: 0 });
+      gsap.set("#nrflash", { opacity: 0 });
+      gsap.set(".cold", { opacity: 1, y: 0 });
+      gsap.set(".cnew", { opacity: 0, y: 14 });
+      gsap.set("#dim", { opacity: 1 });
+      gsap.set("#card", { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 });
+      gsap.set(["#frame", "#exlabel", "#excase", "#excap"], { opacity: 0 });
+      gsap.set("#stamp", { opacity: 0, scale: 2.6, rotation: -7 });
+      gsap.set("#chip", { opacity: 0, x: -30 });
+      gsap.set(["#l1", "#l2"], { opacity: 0, x: 40 });
+      gsap.set("#fin", { x: 1210 });
+      gsap.set(["#f1", "#f2", "#f3", "#f5", "#f6", "#f7"], { opacity: 0, y: 26 });
+      gsap.set(["#f4", "#f5u"], { scaleX: 0 });
+      gsap.set("#f8", { opacity: 0, scale: 2.4, rotation: -7 });
+
+      // 1. the artifact, full frame
+      tl.to("#chip", { opacity: 1, x: 0, duration: 0.35, ease: "power2.out" }, 0.25);
+      tl.to("#chip", { opacity: 0, duration: 0.2, ease: "power1.in" }, 1.25);
+
+      // 2. it becomes a case-file card
+      tl.to("#card", { x: -260, y: -10, scale: 0.5, duration: 0.8, ease: "power4.inOut" }, 1.4);
+      tl.to("#frame", { opacity: 1, duration: 0.3, ease: "power1.out" }, 1.75);
+      tl.to(["#exlabel", "#excase", "#excap"], { opacity: 1, duration: 0.3, stagger: 0.08, ease: "power1.out" }, 2.1);
+      tl.to("#l1", { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 2.35);
+
+      // 3. FILED
+      tl.to("#stamp", { opacity: 1, scale: 1, duration: 0.16, ease: "power4.in" }, 2.95);
+      tl.to("#card", { scale: 0.485, duration: 0.06, ease: "power2.out" }, 3.11);
+      tl.to("#card", { scale: 0.5, duration: 0.3, ease: "elastic.out(1.2, 0.4)" }, 3.17);
+
+      // 4. the library pushes in behind
+      tl.to("#dim", { opacity: 0.86, duration: 0.6, ease: "power2.out" }, 3.5);
+      tl.to("#world", { scale: 1.07, duration: 3.0, ease: "none" }, 3.5);
+      tl.to("#l2", { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 3.8);
+      tl.to(["#l1", "#l2"], { opacity: 0, duration: 0.3, ease: "power1.in" }, 5.0);
+      tl.to("#dim", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 5.0);
+
+      // 5. the list opens a slot, the card slides in
+      tl.to("#rows", { y: 80, duration: 0.5, ease: "power3.inOut" }, 5.1);
+      tl.to(["#exlabel", "#excase", "#excap"], { opacity: 0, duration: 0.25, ease: "power1.in" }, 5.2);
+      tl.to("#card", { x: -570, y: 1, scale: 0.055, rotation: -8, duration: 0.95, ease: "power3.inOut" }, 5.3);
+      tl.to("#newrow", { opacity: 1, duration: 0.12, ease: "none" }, 6.15);
+      tl.to("#card", { opacity: 0, duration: 0.12, ease: "none" }, 6.2);
+      tl.to("#nrflash", { opacity: 0.85, duration: 0.08, ease: "none" }, 6.15);
+      tl.to("#nrflash", { opacity: 0, duration: 0.5, ease: "power2.out" }, 6.25);
+
+      // 6. 21 becomes 22
+      tl.to(".cold", { opacity: 0, y: -14, duration: 0.25, ease: "power2.in" }, 6.4);
+      tl.to(".cnew", { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, 6.55);
+
+      // 7. zoom to the list, final panel
+      tl.to("#world", { scale: 2, duration: 0.9, ease: "power3.inOut" }, 6.7);
+      tl.to("#fin", { x: 0, duration: 0.75, ease: "power4.out" }, 6.95);
+      tl.to("#f1", { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 7.3);
+      tl.to("#f2", { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 7.4);
+      tl.to("#f3", { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 7.6);
+      tl.to("#f4", { scaleX: 1, duration: 0.5, ease: "power3.inOut" }, 7.6);
+      tl.to("#f5", { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 7.8);
+      tl.to("#f5u", { scaleX: 1, duration: 0.45, ease: "power3.inOut" }, 7.95);
+      tl.to(["#f6", "#f7"], { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, ease: "power2.out" }, 8.0);
+      tl.to("#f8", { opacity: 1, scale: 1, duration: 0.14, ease: "power4.in" }, 8.3);
+      tl.to({}, { duration: 0.01 }, 9.99);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

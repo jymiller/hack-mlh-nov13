@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #000; color: #f2efe5; font-family: "DM Sans", Arial, sans-serif; }
+      .abs { position: absolute; }
+      .mono { font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .14em; }
+      .serif { font-family: "Instrument Serif", Georgia, serif; }
+
+      #world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+      #lib { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #1b171a; }
+      #page { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background-image: url(media/hackathons.png); background-size: 1920px 1080px; }
+
+      /* the list column: an empty slot, then the existing records as one strip that slides down */
+      #slot { position: absolute; left: 265px; top: 501px; width: 251px; height: 80px; background: #1b171a; }
+      #strip { position: absolute; left: 265px; top: 501px; width: 251px; height: 579px; background-image: url(media/hackathons.png); background-size: 1920px 1080px; background-position: -265px -501px; }
+      #desel { position: absolute; left: 0; top: 0; width: 251px; height: 79px; background: #1b171a; }
+      #desel .thumb { position: absolute; left: 18px; top: 15px; width: 44px; height: 44px; background-image: url(media/hackathons.png); background-size: 1920px 1080px; background-position: -283px -516px; }
+      .rdate { position: absolute; left: 75px; font-size: 11px; line-height: 14px; color: #b9aeb2; white-space: nowrap; }
+      .rtitle { position: absolute; left: 75px; font-size: 14px; line-height: 18px; color: #f2efe5; white-space: nowrap; }
+
+      #newrow { position: absolute; left: 265px; top: 501px; width: 251px; height: 80px; background: #3b2c33; border-left: 3px solid #f0a18b; border-bottom: 1px solid #48383f; }
+      #newrow .rdate { left: 72px; top: 13px; color: #f0a18b; }
+      #newrow .rtitle { left: 72px; top: 29px; }
+      #newrow .rsmall { position: absolute; left: 72px; top: 52px; font-size: 8.5px; line-height: 12px; color: #b9aeb2; white-space: nowrap; }
+      #rowsweep { position: absolute; left: 265px; top: 501px; width: 251px; height: 79px; background: #f0a18b; }
+
+      /* record counters (cover the screenshot's own "21 records") */
+      .count { position: absolute; height: 20px; overflow: hidden; background: #1b171a; font-size: 11.5px; line-height: 20px; color: #b9aeb2; white-space: nowrap; }
+      .count div { position: absolute; top: 0; height: 20px; }
+      #c1 { left: 279px; top: 462px; width: 90px; }
+      #c1 div { left: 4px; }
+      #c2 { left: 1560px; top: 349px; width: 96px; font-size: 12.5px; }
+      #c2 div { right: 0; }
+      .c22 { color: #f0a18b; }
+
+      /* the detail panel, rewritten for the new record */
+      #panel { position: absolute; left: 517px; top: 446px; width: 1139px; height: 634px; background: #f2efe5; color: #241e22; }
+      #psweep { position: absolute; left: 517px; top: 446px; width: 1139px; height: 634px; background: #f0a18b; }
+      #plabel { position: absolute; left: 28px; top: 26px; font-size: 17px; line-height: 22px; font-weight: 500; color: #241e22; white-space: nowrap; }
+      #plabel span { display: inline-block; width: 11px; height: 11px; background: #f0a18b; margin-right: 12px; }
+      #pdate { position: absolute; left: 28px; top: 66px; font-size: 14px; line-height: 18px; color: #6d5f64; white-space: nowrap; }
+      .pl { position: absolute; left: 26px; font-size: 92px; line-height: 92px; letter-spacing: -.01em; white-space: nowrap; color: #241e22; }
+      #pl1 { top: 98px; }
+      #pl2 { top: 188px; }
+      #pl3 { top: 278px; font-style: italic; color: #c9684d; }
+      #pmeta { position: absolute; left: 28px; top: 400px; font-size: 17px; line-height: 22px; color: #4b3f44; white-space: nowrap; }
+      #pimg { position: absolute; left: 640px; top: 104px; width: 471px; height: 265px; background-color: #000; background-image: url(media/artifact.png); background-size: 471px 265px; border: 1px solid #cfc4bc; }
+      #pcap { position: absolute; left: 640px; top: 380px; width: 471px; font-size: 13px; line-height: 18px; color: #6d5f64; }
+      #prule { position: absolute; left: 28px; top: 474px; width: 1083px; height: 1px; background: #cfc4bc; transform-origin: left center; }
+      #purl { position: absolute; left: 28px; top: 506px; height: 64px; padding: 0 26px; background: #241e22; color: #f2efe5; font-size: 27px; line-height: 64px; text-transform: none; letter-spacing: .04em; white-space: nowrap; }
+      #purl b { color: #f0a18b; font-weight: 500; margin-left: 18px; }
+      #pnote { position: absolute; right: 28px; top: 528px; font-size: 13px; line-height: 20px; color: #6d5f64; white-space: nowrap; }
+
+      /* the artifact: the thing the camera pulls back from */
+      #art { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background-color: #000; background-image: url(media/artifact.png); background-size: 1920px 1080px; transform-origin: 0 0; }
+
+      /* screen-fixed caption while the artifact is on screen */
+      #chip { position: absolute; left: 80px; top: 954px; height: 56px; white-space: nowrap; font-size: 20px; line-height: 56px; }
+      #chip .a { display: inline-block; height: 56px; padding: 0 20px; background: #f0a18b; color: #241e22; font-weight: 500; vertical-align: top; }
+      #chip .b { display: inline-block; height: 56px; padding: 0 22px; background: #241e22; color: #f2efe5; vertical-align: top; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="9.5" data-width="1920" data-height="1080">
+      <div id="world" class="clip" data-start="0" data-duration="9.5" data-track-index="0">
+        <div id="lib" class="clip" data-start="0" data-duration="9.5" data-track-index="1">
+          <div id="page" class="clip" data-start="0" data-duration="9.5" data-track-index="2"></div>
+          <div id="slot" class="clip" data-start="0" data-duration="9.5" data-track-index="3"></div>
+          <div id="strip" class="clip" data-start="0" data-duration="9.5" data-track-index="4">
+            <div id="desel" class="clip" data-start="0" data-duration="9.5" data-track-index="5">
+              <div class="thumb"></div>
+              <div class="rdate" style="top: 20px">Sep 21</div>
+              <div class="rtitle" style="top: 39px">The Looping Lab</div>
+            </div>
+          </div>
+          <div id="newrow" class="clip" data-start="0" data-duration="9.5" data-track-index="6">
+            <div class="rdate">Nov 13</div>
+            <div class="rtitle">Jay+1 Field Notes</div>
+            <div class="rsmall">AIE x MLH Hackathon &middot; San Francisco</div>
+          </div>
+          <div id="c1" class="count clip" data-start="0" data-duration="9.5" data-track-index="7">
+            <div class="c21">21 records</div>
+            <div class="c22">22 records</div>
+          </div>
+          <div id="c2" class="count clip" data-start="0" data-duration="9.5" data-track-index="8">
+            <div class="c21">21 records</div>
+            <div class="c22">22 records</div>
+          </div>
+          <div id="panel" class="clip" data-start="0" data-duration="9.5" data-track-index="9">
+            <div id="plabel" class="mono clip" data-start="0" data-duration="9.5" data-track-index="10"><span></span>Hackathon 22</div>
+            <div id="pdate" class="clip" data-start="0" data-duration="9.5" data-track-index="11">Nov 13 &middot; 2026</div>
+            <div id="pl1" class="pl serif clip" data-start="0" data-duration="9.5" data-track-index="12">Jay+1 Field Notes,</div>
+            <div id="pl2" class="pl serif clip" data-start="0" data-duration="9.5" data-track-index="13">now in the</div>
+            <div id="pl3" class="pl serif clip" data-start="0" data-duration="9.5" data-track-index="14">Milbird Lab.</div>
+            <div id="pmeta" class="clip" data-start="0" data-duration="9.5" data-track-index="15">AIE x MLH Hackathon &middot; San Francisco &middot; a film made in sixty minutes</div>
+            <div id="pimg" class="clip" data-start="0" data-duration="9.5" data-track-index="16"></div>
+            <div id="pcap" class="clip" data-start="0" data-duration="9.5" data-track-index="17">The Claude Artifact the hour produced: a control room for the film.</div>
+            <div id="prule" class="clip" data-start="0" data-duration="9.5" data-track-index="18"></div>
+            <div id="purl" class="mono clip" data-start="0" data-duration="9.5" data-track-index="19">milbird.com/hackathons<b>&rarr;</b></div>
+            <div id="pnote" class="mono clip" data-start="0" data-duration="9.5" data-track-index="20">Record 22 of 22 &middot; by John Y Miller</div>
+          </div>
+          <div id="psweep" class="clip" data-start="0" data-duration="9.5" data-track-index="21"></div>
+        </div>
+        <div id="art" class="clip" data-start="0" data-duration="9.5" data-track-index="22"></div>
+        <div id="rowsweep" class="clip" data-start="0" data-duration="9.5" data-track-index="23"></div>
+      </div>
+      <div id="chip" class="mono clip" data-start="0" data-duration="9.5" data-track-index="24"><span class="a">The artifact</span><span class="b">Jay+1 Field Notes &middot; made at the AIE x MLH Hackathon</span></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      const HIDE_R = "inset(0% 100% 0% 0%)", SHOW = "inset(0% 0% 0% 0%)", HIDE_L = "inset(0% 0% 0% 100%)";
+
+      // --- camera: tight on the program monitor -> whole page -> thumbnail in the list (one move, 0.2s to 3.9s)
+      tl.fromTo("#art", { x: -562, y: -366, scale: 2, clipPath: "inset(0px 0px 0px 0px)" }, { x: 0, y: 0, scale: 1, duration: 1.5, ease: "power2.inOut" }, 0.2);
+      tl.to("#art", { x: 48, y: 27, scale: 0.95, duration: 0.6, ease: "none" }, 1.7);
+      tl.to("#art", { x: 265.889, y: 516, scale: 0.040741, clipPath: "inset(0px 420px 0px 420px)", duration: 1.6, ease: "power2.inOut" }, 2.3);
+
+      // caption while the artifact is the subject
+      tl.fromTo("#chip", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }, 0.9);
+      tl.to("#chip", { opacity: 0, duration: 0.3, ease: "power1.in" }, 2.3);
+
+      // --- the library fades up around it
+      tl.fromTo("#lib", { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "power1.inOut" }, 1.9);
+
+      // existing records slide down one slot; the old top record loses its selected state
+      tl.fromTo("#strip", { y: 0 }, { y: 80, duration: 0.8, ease: "power3.inOut" }, 2.8);
+      tl.fromTo("#desel", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none" }, 2.8);
+
+      // coral sweep across the new row, revealing the record
+      tl.fromTo("#rowsweep", { clipPath: HIDE_R }, { clipPath: SHOW, duration: 0.3, ease: "power2.in" }, 3.85);
+      tl.fromTo("#newrow", { opacity: 0 }, { opacity: 1, duration: 0.02, ease: "none" }, 4.14);
+      tl.to("#rowsweep", { clipPath: HIDE_L, duration: 0.4, ease: "power2.out" }, 4.17);
+
+      // counters 21 -> 22
+      tl.fromTo(".c21", { y: 0 }, { y: -20, duration: 0.4, ease: "power3.inOut" }, 4.2);
+      tl.fromTo(".c22", { y: 20 }, { y: 0, duration: 0.4, ease: "power3.inOut" }, 4.2);
+
+      // coral sweep across the detail panel; it comes back as the new record
+      tl.fromTo("#psweep", { clipPath: HIDE_R }, { clipPath: SHOW, duration: 0.45, ease: "power3.in" }, 4.35);
+      tl.fromTo("#panel", { opacity: 0 }, { opacity: 1, duration: 0.02, ease: "none" }, 4.79);
+      tl.to("#psweep", { clipPath: HIDE_L, duration: 0.55, ease: "power3.out" }, 4.82);
+
+      tl.fromTo("#plabel", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }, 5.05);
+      tl.fromTo("#pdate", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 5.2);
+      tl.fromTo("#pimg", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 5.2);
+      tl.fromTo(["#pl1", "#pl2", "#pl3"], { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.16, ease: "power3.out" }, 5.4);
+      tl.fromTo("#pcap", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 5.7);
+      tl.fromTo("#pmeta", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 6.1);
+      tl.fromTo("#prule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.inOut" }, 6.1);
+      tl.fromTo("#purl", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 6.45);
+      tl.fromTo("#pnote", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 6.75);
+
+      // slow push-in on the list and the new record, then hold
+      tl.fromTo("#world", { x: 0, y: 0, scale: 1 }, { x: -288, y: -324, scale: 1.3, duration: 2.5, ease: "power2.inOut" }, 4.5);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #000; color: #f2efe5; font-family: "DM Sans", Arial, sans-serif; }
+      .mono { font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .18em; }
+      .serif { font-family: "Instrument Serif", Georgia, serif; }
+      .c { position: absolute; left: 0; width: 1920px; text-align: center; }
+      #bars { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; border-top: 110px solid #000; border-bottom: 110px solid #000; }
+      #logo { position: absolute; left: 148px; top: -249px; width: 1623px; height: 1478px; filter: brightness(0) invert(1); }
+      .pc { position: absolute; left: 0; top: 0; width: 1623px; height: 1478px; background: url(media/logo.png) 0 0 / 1623px 1478px no-repeat; }
+      #bt { clip-path: polygon(330px 10px, 1000px 10px, 1000px 560px, 900px 770px, 760px 770px, 640px 620px, 340px 520px); transform-origin: 700px 400px; }
+      #bl { clip-path: polygon(50px 640px, 330px 640px, 520px 800px, 745px 800px, 745px 960px, 700px 1195px, 50px 1195px); transform-origin: 420px 950px; }
+      #br { clip-path: polygon(1600px 630px, 1320px 630px, 1130px 800px, 900px 800px, 900px 960px, 950px 1195px, 1600px 1195px); transform-origin: 1230px 950px; }
+      #ht { clip-path: polygon(725px 772px, 905px 772px, 905px 950px, 725px 950px); transform-origin: 815px 860px; }
+      #wm { clip-path: polygon(60px 1196px, 1600px 1196px, 1600px 1478px, 60px 1478px); }
+      .cr { position: absolute; left: 0; top: 0; width: 1920px; }
+      .cr .mono { font-size: 26px; color: #f0a18b; margin-top: 70px; }
+      .cr .serif { font-size: 76px; line-height: 1.1; }
+      .cr .fine { font-size: 56px; font-style: italic; color: #c5bcc0; margin-top: 110px; }
+      .role { top: 400px; font-size: 30px; color: #f0a18b; }
+      .name { top: 460px; font-size: 124px; line-height: 1.05; }
+      .big { font-size: 330px; line-height: 1; letter-spacing: -.02em; }
+      em { color: #f0a18b; }
+      #wipe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #f0a18b; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15.5" data-width="1920" data-height="1080">
+      <div id="te" class="clip c serif big" style="top: 330px" data-start="0" data-duration="2.4" data-track-index="2">The End.</div>
+      <div id="ts" class="clip c mono" style="top: 720px; font-size: 30px; color: #f0a18b" data-start="0.9" data-duration="1.5" data-track-index="3">Of the film. The hackathon ran long.</div>
+      <div id="roll" class="clip cr" data-start="2.4" data-duration="7.2" data-track-index="4" style="text-align:center">
+        <div class="mono">Directed by</div><div class="serif">Claude Opus 5.5, final judge on content</div>
+        <div class="mono">Edited by</div><div class="serif">Also Claude</div>
+        <div class="mono">Produced by</div><div class="serif">A third Claude, reporting to the human</div>
+        <div class="mono">The human</div><div class="serif">John Y Miller</div>
+        <div class="mono">Shot on</div><div class="serif">One iPhone, in the rain</div>
+        <div class="mono">Rendered with</div><div class="serif">HyperFrames, in about twenty seconds</div>
+        <div class="mono">Argued about for</div><div class="serif">The other fifty-five minutes</div>
+        <div class="serif fine">No timelines were harmed in the making of this film.</div>
+        <div class="serif fine" style="margin-top:40px">Any resemblance to a finished product is the +1&rsquo;s fault.</div>
+      </div>
+      <div id="logo" class="clip" data-start="9.6" data-duration="3.6" data-track-index="1">
+        <div id="bt" class="pc"></div><div id="bl" class="pc"></div><div id="br" class="pc"></div><div id="ht" class="pc"></div><div id="wm" class="pc"></div>
+      </div>
+      <div id="pm" class="clip c mono" style="top: 895px; font-size: 26px; color: #c5bcc0" data-start="11.3" data-duration="1.9" data-track-index="5">A Milbird Media production &middot; milbird.com &middot; youtube.com/@jayplusone</div>
+      <div id="pc1" class="clip c mono" style="top: 500px; font-size: 44px; color: #f0a18b; letter-spacing: .04em; text-transform: none" data-start="13.5" data-duration="2.0" data-track-index="6">+1: You&rsquo;re still here? Go build something.</div>
+      <div id="bars" class="clip" data-start="0" data-duration="15.5" data-track-index="40"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#te", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power4.out" }, 0.15);
+      tl.fromTo("#ts", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 1.0);
+      tl.to(["#te", "#ts"], { opacity: 0, duration: 0.25 }, 2.1);
+      tl.fromTo("#roll", { y: 1000 }, { y: -1620, duration: 7.2, ease: "none" }, 2.4);
+      tl.set("#logo", { scale: 0.5, opacity: 1 }, 9.6);
+      tl.set("#ht", { scale: 0 }, 9.6); tl.set("#wm", { opacity: 0 }, 9.6);
+      tl.fromTo("#bt", { y: -2200, rotation: -70 }, { y: 0, rotation: 0, duration: 0.75, ease: "power3.in" }, 9.799999999999999);
+      tl.fromTo("#bl", { x: -2600, rotation: 40 }, { x: 0, rotation: 0, duration: 0.7, ease: "power3.in" }, 9.9);
+      tl.fromTo("#br", { x: 2600, rotation: -40 }, { x: 0, rotation: 0, duration: 0.65, ease: "power3.in" }, 9.95);
+      tl.to("#logo", { x: 26, duration: 0.04 }, 10.6); tl.to("#logo", { x: -20, duration: 0.05 }, 10.64); tl.to("#logo", { x: 12, duration: 0.05 }, 10.69); tl.to("#logo", { x: 0, duration: 0.06 }, 10.74);
+      tl.to("#bt", { rotation: 9, duration: 0.12, yoyo: true, repeat: 1 }, 10.6);
+      tl.to("#bl", { rotation: -8, duration: 0.12, yoyo: true, repeat: 1 }, 10.6);
+      tl.to("#br", { rotation: 8, duration: 0.12, yoyo: true, repeat: 1 }, 10.6);
+      tl.to("#ht", { scale: 1, duration: 0.5, ease: "back.out(4)" }, 10.75);
+      tl.to("#ht", { scale: 1.25, duration: 0.14, yoyo: true, repeat: 3, ease: "power1.inOut" }, 11.4);
+      tl.to("#wm", { opacity: 1, duration: 0.35 }, 11.049999999999999);
+      tl.fromTo("#pm", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 11.4);
+      tl.to(["#logo", "#pm"], { opacity: 0, duration: 0.3 }, 12.85);
+      tl.fromTo("#pc1", { opacity: 0 }, { opacity: 1, duration: 0.08 }, 13.7);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
