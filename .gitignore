@@ -33,3 +33,4 @@ video/**/renders/
 *.mp4
 *.MOV
 video/**/.hyperframes/
+artifact/simplified-preview.html

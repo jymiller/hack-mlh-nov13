@@ -7,6 +7,8 @@ Built at the **AIE x MLH Hackathon @ Code Summit**, Friday 13 November 2026, San
 
 - **The app:** https://claude.ai/artifact/JBtfJ25EHPkXH6SbQ3EMgq (the control room: monitors, rundown, crew,
   and a distribution desk; source in [`artifact/field-notes.html`](artifact/field-notes.html))
+- **The hackathon entry:**
+  https://www.mlh.com/events/aie-x-mlh-hackathon-code-summit/submissions/01a1d725-8a26-9e82-ca7c-8bacca8091e3
 - **The full film (1:21):** https://youtu.be/xk_UCyKhiY8
 - **The director's cut (0:34, the submitted video):** https://youtu.be/ZP9PZGTm5_E
 - **Channel:** https://www.youtube.com/@jayplusone

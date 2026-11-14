@@ -31,6 +31,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .lamps{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
 .lamp{display:flex;align-items:center;gap:7px;border:1px solid var(--line);padding:4px 9px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .lamp::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--line);flex:none}
+.lamp.r{color:var(--paper)} .lamp.r::before{background:var(--tally-red)}
 .lamp.g{color:var(--paper)} .lamp.g::before{background:var(--tally-green)}
 .lamp.a{color:var(--paper)} .lamp.a::before{background:var(--tally-amber);animation:blink 1.6s steps(2,jump-none) infinite}
 @keyframes blink{50%{opacity:.25}}
@@ -218,13 +219,13 @@ footer strong{color:var(--paper);font-weight:500}
     <ul class="lamps" aria-label="Status lights">
       <li class="lamp g">Cut v2 rendered</li>
       <li class="lamp g">YouTube: live</li>
-      <li class="lamp">On air</li>
+      <li class="lamp r">On air</li>
     </ul>
   </div>
 
   <header class="ident">
     <h1>One person, <em>plus one</em> intelligence, at a hackathon.</h1>
-    <p><strong>Jay+1 is John Y Miller's show.</strong> He reached the hackathon at 2:04 PM with submissions closing at 3:00. He recorded the room; his plus-one drafted the field notes and cut a 31-second film about the hour. This is the gallery the film was cut in.</p>
+    <p><strong>Jay+1 is John Y Miller's show.</strong> He reached the hackathon at 2:04 PM with submissions closing at 3:00. He recorded the room; his plus-one drafted the field notes and cut a film about the hour, 1:21 in full. This is the gallery the film was cut in.</p>
   </header>
 
   <div class="wall">
