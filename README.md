@@ -5,8 +5,10 @@ sixty minutes, written in HTML and rendered with HyperFrames.
 
 Built at the **AIE x MLH Hackathon @ Code Summit**, Friday 13 November 2026, San Francisco.
 
-- **The app:** https://claude.ai/artifact/JBtfJ25EHPkXH6SbQ3EMgq (the control room: monitors, rundown, crew,
-  and a distribution desk; source in [`artifact/field-notes.html`](artifact/field-notes.html))
+- **The app:** https://claude.ai/artifact/JBtfJ25EHPkXH6SbQ3EMgq (the film as the program monitor, the
+  field notes, and a publish desk; source in [`artifact/field-notes.html`](artifact/field-notes.html). The earlier
+  control-room version is kept in [`artifact/field-notes-control-room.html`](artifact/field-notes-control-room.html)
+  and the review that led to the change in [`artifact/DESIGN-REVIEW.md`](artifact/DESIGN-REVIEW.md).)
 - **The hackathon entry:**
   https://www.mlh.com/events/aie-x-mlh-hackathon-code-summit/submissions/01a1d725-8a26-9e82-ca7c-8bacca8091e3
 - **The full film (1:21):** https://youtu.be/xk_UCyKhiY8
@@ -19,7 +21,7 @@ John walks the room and records what he hears and sees (Granola, iPhone). His pl
 into field notes and a short film. The film is a set of HyperFrames compositions: HTML and CSS with a scripted
 timeline, rendered locally to 1080p MP4. There is no timeline editor and no After Effects in the loop.
 
-The control room page is the app. YouTube is the one live output today. The other buttons on its distribution
+The page is the app. YouTube is the one live output today. The other channels on its publish
 desk (Milbird.com, Instagram, TikTok, LinkedIn, X) show the intended flow and are marked as a demo.
 
 ## How HyperFrames was used

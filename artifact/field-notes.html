@@ -1,512 +1,320 @@
 <title>Jay+1 Field Notes</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: a broadcast gallery. Status bar, then the monitor wall (program large, preview and playout stack beside it), a to-scale timeline, the rundown beside comms and clocks, the patch bay and router outputs, and the notes desk last. Milbird Culture Studio identity, dark first. Monitors stay dark glass in both themes. */
+/* Simplified gallery. Three jobs in order: watch the film, read the notes, send it out.
+   One program monitor (the real film), one row of reels, the notes, one publish desk, and
+   everything about how it was made behind two closed drawers. Dark in every theme.
+   Each piece of content appears once; lines marked EDIT are what changes for the next event. */
 :root{
-  --ink:#000000; --deep:#060606; --paper:#f1f4f6; --muted:#8a9299; --accent:#4fd6e0; --line:#1e2226; --on-accent:#000000;
-  --tally-red:#ff5a4f; --tally-green:#5fd08a; --tally-amber:#f2b84b; --on-tally:#1b171a;
-  --bezel:#000000; --screen:#000000; --screen-fg:#f1f4f6; --screen-dim:#7a838b; --screen-accent:#4fd6e0; --screen-line:#191d21;
+  --ink:#000000; --deep:#0a0c0d; --paper:#f1f4f6; --muted:#9aa3aa; --accent:#4fd6e0; --on-accent:#000000;
+  --line:#262b30; --edge:#5b656d; --tally-red:#ff4b5c; --tally-green:#5fd08a;
   --display:"Instrument Serif",Georgia,"Times New Roman",serif;
   --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   color-scheme:dark;
 }
-@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){ --ink:#000000; --deep:#060606; --paper:#f1f4f6; --muted:#8a9299; --accent:#4fd6e0; --line:#1e2226; --on-accent:#000000; --tally-red:#ff5a4f; --tally-green:#5fd08a; --tally-amber:#f2b84b; --on-tally:#000000; color-scheme:dark } }
-:root[data-theme="light"]{ --ink:#000000; --deep:#060606; --paper:#f1f4f6; --muted:#8a9299; --accent:#4fd6e0; --line:#1e2226; --on-accent:#000000; --tally-red:#ff5a4f; --tally-green:#5fd08a; --tally-amber:#f2b84b; --on-tally:#000000; color-scheme:dark }
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){ --ink:#000000; --deep:#0a0c0d; --paper:#f1f4f6; --muted:#9aa3aa; --accent:#4fd6e0; --on-accent:#000000; --line:#262b30; --edge:#5b656d; color-scheme:dark } }
+:root[data-theme="light"],:root[data-theme="dark"]{ --ink:#000000; --deep:#0a0c0d; --paper:#f1f4f6; --muted:#9aa3aa; --accent:#4fd6e0; --on-accent:#000000; --line:#262b30; --edge:#5b656d; color-scheme:dark }
 
 *{box-sizing:border-box}
-body{background:var(--ink);color:var(--paper);font-family:var(--body);font-size:16px;line-height:1.55;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--body);font-size:17px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
 a{color:var(--accent);text-underline-offset:3px}
-a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.room{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
-.lbl{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+a:focus-visible,button:focus-visible,summary:focus-visible,video:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.room{max-width:1120px;margin:0 auto}
+.tag{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .num{font-variant-numeric:tabular-nums}
 
-/* status bar */
-.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 20px;padding-block:14px;border-bottom:1px solid var(--line)}
-.bar .where{display:flex;flex-wrap:wrap;gap:4px 18px}
-.bar .where b{color:var(--accent);font-weight:500}
-.lamps{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
-.lamp{display:flex;align-items:center;gap:7px;border:1px solid var(--line);padding:4px 9px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.lamp::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--line);flex:none}
-.lamp.r{color:var(--paper)} .lamp.r::before{background:var(--tally-red)}
-.lamp.g{color:var(--paper)} .lamp.g::before{background:var(--tally-green)}
-.lamp.a{color:var(--paper)} .lamp.a::before{background:var(--tally-amber);animation:blink 1.6s steps(2,jump-none) infinite}
-@keyframes blink{50%{opacity:.25}}
+/* bar: who, where, and the one light that matters */
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0 20px;padding-block:6px;border-bottom:1px solid var(--line)}
+.bar .brand{color:var(--accent)}
+.bar .where{flex:1 1 auto}
+.onair{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--paper);text-decoration:none;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.onair::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--tally-red);flex:none}
+.onair:hover{color:var(--accent)}
 
-/* ident */
-.ident{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:8px 32px;align-items:end;padding-block:6px 2px}
-h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,4.6vw,44px);line-height:1.02;margin:0;text-wrap:balance}
-h1 em{color:var(--accent)}
-.ident p{margin:0;color:var(--muted);font-size:15px;max-width:64ch}
-.ident p strong{color:var(--paper);font-weight:500}
+/* hero: the film is the program monitor */
+.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);grid-template-areas:"mon head" "mon talk" "reels reels";gap:20px 36px;padding-block:28px 8px;align-items:start}
+.head{grid-area:head}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,4.2vw,48px);line-height:1.04;margin:0 0 14px;text-wrap:balance}
+h1 em{color:var(--accent);white-space:nowrap}
+.lede{margin:0 0 18px;color:var(--paper);max-width:46ch}
+.acts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px}
+.btn{font-family:var(--mono);font-size:15px;font-weight:500;letter-spacing:.04em;min-height:48px;padding:10px 20px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn:hover{background:var(--paper);border-color:var(--paper)}
+.btn.quiet{background:transparent;color:var(--accent)}
+.btn.quiet:hover{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.acts a{display:inline-flex;align-items:center;min-height:44px;font-size:15px}
 
-/* panels */
-.panel{background:var(--deep);border:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
-.panel > .hd{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 14px;padding:9px 14px;border-bottom:1px solid var(--line)}
-.panel > .hd h2{margin:0;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper)}
-.panel > .bd{padding:14px;display:flex;flex-direction:column;gap:12px}
+.mon{grid-area:mon;margin:0;border-top:4px solid var(--tally-red);background:var(--deep)}
+.mon figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px 12px;padding:8px 10px}
+.mon figcaption b{font-weight:500;background:var(--tally-red);color:var(--on-accent);padding:1px 8px}
+.mon video{display:block;width:100%;aspect-ratio:16/9;background:var(--ink)}
 
-/* screening room */
-.scr{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:14px;align-items:start}
-.scr video{display:block;width:100%;aspect-ratio:16/9;background:var(--bezel);border-top:4px solid var(--tally-red)}
-.reels{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
-.reel{width:100%;display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:10px 12px;border:1px solid var(--line);background:var(--ink);color:var(--paper);cursor:pointer;text-align:left;font-family:var(--body);font-size:15px}
-.reel span{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;color:var(--muted);white-space:nowrap}
+/* the two voices: +1 in mono, JAY in serif */
+.talk{grid-area:talk;margin:0;padding:14px 0 0;border-top:1px solid var(--line)}
+.lines{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:2px}
+.ln{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:baseline;line-height:1.3}
+.ln i{font-family:var(--mono);font-style:normal;font-size:13px;color:var(--muted)}
+.ln[data-who="p1"]{font-family:var(--mono);font-size:15px;color:var(--accent)}
+.ln[data-who="p1"] i{color:var(--accent)}
+.ln[data-who="jay"],.ln[data-who="card"]{font-family:var(--display);font-size:22px}
+.ln[data-who="card"]{font-style:italic}
+
+.reels{grid-area:reels;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.reel{width:100%;min-height:56px;display:flex;flex-direction:column;justify-content:center;gap:1px;padding:8px 12px;border:1px solid var(--edge);background:var(--ink);color:var(--paper);cursor:pointer;text-align:left;font-family:var(--body);font-size:15px;line-height:1.25}
+.reel span{font-family:var(--mono);font-size:13px;color:var(--muted)}
 .reel:hover{border-color:var(--accent)}
-.reel[aria-pressed="true"]{border-color:var(--tally-red);box-shadow:inset 3px 0 0 var(--tally-red)}
-@media (max-width:760px){ .scr{grid-template-columns:1fr} }
+.reel[aria-pressed="true"]{border-color:var(--tally-red);box-shadow:inset 0 3px 0 var(--tally-red)}
 
-/* distribution desk */
-.dist{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
-.ch{border:1px solid var(--line);background:var(--ink);padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.ch .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.ch .nm{font-family:var(--display);font-size:24px;line-height:1}
-.ch .st{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
-.ch[data-state="live"] .st{background:var(--tally-red);border-color:var(--tally-red);color:var(--on-tally)}
-.ch[data-state="queued"] .st,.ch[data-state="sending"] .st{border-color:var(--tally-amber);color:var(--tally-amber)}
-.ch[data-state="sent"] .st{background:var(--tally-green);border-color:var(--tally-green);color:var(--on-tally)}
-.ch small{color:var(--muted);font-size:13px;line-height:1.4}
-.ch .bar{height:3px;background:var(--line);overflow:hidden}
-.ch .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width 1.1s linear}
-.ch[data-state="sending"] .bar i,.ch[data-state="sent"] .bar i,.ch[data-state="live"] .bar i{width:100%}
-.go{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:9px 12px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;text-align:center;text-decoration:none}
-.go:hover{background:var(--accent);color:var(--on-accent)}
-.go[disabled]{border-color:var(--line);color:var(--muted);cursor:default;background:transparent}
-.go.all{background:var(--accent);color:var(--on-accent);font-weight:500;padding:11px 16px}
-.distbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px}
-.distbar p{margin:0;color:var(--muted);font-size:13.5px;max-width:70ch}
-@media (prefers-reduced-motion: reduce){ .ch .bar i{transition:none} }
+/* sections */
+section.blk{padding-block:40px 0}
+.blk > .hd{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+h2{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.1;margin:0}
 
-/* monitor wall */
-.wall{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:18px;align-items:start}
-.side{display:flex;flex-direction:column;gap:18px;min-width:0}
-.mon{background:var(--bezel);padding:8px;display:flex;flex-direction:column;gap:8px;min-width:0;border-top:4px solid var(--line)}
-.mon.pgm{border-top-color:var(--tally-red)}
-.mon.pvw{border-top-color:var(--tally-green)}
-.mon .tag{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--screen-dim)}
-.mon .tag b{font-weight:500;padding:1px 8px;color:var(--on-tally)}
-.mon.pgm .tag b{background:var(--tally-red)} .mon.pvw .tag b{background:var(--tally-green)}
-.screen{position:relative;aspect-ratio:16/9;max-width:100%;background:var(--screen);color:var(--screen-fg);container-type:inline-size;overflow:hidden;display:flex;align-items:center}
-.screen::before{content:"";position:absolute;inset:5%;border:1px solid var(--screen-line);pointer-events:none}
-.screen::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0 3px,color-mix(in srgb,var(--bezel) 28%,transparent) 3px 4px)}
-.osd{position:absolute;font-family:var(--mono);font-size:max(9px,2.2cqw);letter-spacing:.1em;text-transform:uppercase;color:var(--screen-dim)}
-.osd.tl{top:7%;left:7.5%} .osd.tr{top:7%;right:7.5%} .osd.bl{bottom:7%;left:7.5%} .osd.br{bottom:7%;right:7.5%;color:var(--screen-accent)}
-.screen .lines{width:100%;padding:13cqw 9cqw;display:flex;flex-direction:column;gap:1.4cqw}
-.screen .ln{display:block;line-height:1.12}
-.screen .ln i{font-family:var(--mono);font-style:normal;font-size:2.2cqw;letter-spacing:.14em;color:var(--screen-dim);margin-right:1.6cqw;vertical-align:middle}
-.screen .ln[data-who="p1"]{font-family:var(--mono);font-size:4.1cqw;color:var(--screen-accent)}
-.screen .ln[data-who="p1"] i{color:var(--screen-accent)}
-.screen .ln[data-who="jay"]{font-family:var(--display);font-size:6.6cqw;text-align:right}
-.screen .ln[data-who="card"]{font-family:var(--display);font-size:13cqw;line-height:.98;text-align:center;text-wrap:balance}
-.screen .ln[data-who="stamp"]{align-self:center;font-family:var(--mono);font-weight:500;font-size:8cqw;letter-spacing:.14em;color:var(--screen-accent);border:.7cqw solid var(--screen-accent);padding:.6cqw 3cqw;transform:rotate(-5deg);margin-top:2cqw}
-.screen[data-kind="mark"] .ln[data-who="jay"]{text-align:center}
-.screen[data-kind="montage"] .ln[data-who="card"]{font-size:10.5cqw;font-style:italic;color:var(--screen-accent)}
-.screen[data-kind="end"] .ln[data-who="p1"]{font-size:6cqw;text-align:center}
-.screen[data-kind="end"] .ln[data-who="p1"] i{font-size:6cqw;letter-spacing:0;margin-right:0}
+.notes{margin:0;padding:0;list-style:none;counter-reset:n}
+.notes li{counter-increment:n;display:grid;grid-template-columns:48px minmax(0,1fr);gap:0 12px;padding:20px 0;border-bottom:1px solid var(--line)}
+.notes li::before{content:counter(n);font-family:var(--mono);font-size:15px;color:var(--accent);padding-top:5px}
+h3{font-family:var(--display);font-weight:400;font-size:22px;line-height:1.2;margin:0 0 6px;text-wrap:balance}
+.notes h3{font-size:25px}
+.notes p{margin:0;max-width:66ch}
 
-/* playout stack */
-.stack{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
-.stack li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:4px 10px;align-items:baseline;padding:9px 14px;border-top:1px solid var(--line)}
-.stack li:first-child{border-top:0}
-.stack .v{font-family:var(--mono);font-size:13px;color:var(--accent)}
-.stack .t{font-size:14.5px;line-height:1.35}
-.stack .t small{display:block;color:var(--muted);font-size:13px}
-.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
-.chip.red{border-color:var(--tally-red);background:var(--tally-red);color:var(--on-tally)}
-.chip.green{border-color:var(--tally-green);color:var(--tally-green)}
-.chip.amber{border-color:var(--tally-amber);color:var(--tally-amber)}
+/* publish desk */
+.pubtop{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:16px}
+.pubtop p{margin:0;max-width:60ch}
+.chan{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.chan li{display:grid;grid-template-columns:130px minmax(0,1fr) auto;gap:2px 16px;align-items:center;min-height:52px;padding:8px 0;border-bottom:1px solid var(--line)}
+.chan .nm{font-family:var(--display);font-size:22px;line-height:1.1}
+.chan .what{color:var(--muted);font-size:15px}
+.st{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border:1px solid var(--edge);color:var(--muted);white-space:nowrap;text-align:center}
+.chan li[data-state="live"] .st{background:var(--tally-red);border-color:var(--tally-red);color:var(--on-accent)}
+.chan li[data-state="sending"] .st{border-color:var(--accent);color:var(--accent)}
+.chan li[data-state="sent"] .st{border-color:var(--tally-green);color:var(--tally-green)}
+.chan a{display:inline-flex;align-items:center;min-height:44px}
 
-/* timeline */
-.tl{display:flex;gap:2px;height:34px}
-.tl span{flex-basis:0;min-width:0;display:flex;align-items:center;justify-content:center;background:var(--ink);border:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--muted)}
-.tl span.on{background:var(--tally-red);border-color:var(--tally-red);color:var(--on-tally)}
-.tl span.nx{border-color:var(--tally-green);color:var(--tally-green)}
-.tlx{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted)}
+/* drawers */
+.drawers{padding-top:40px}
+details{border-top:1px solid var(--line)}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;min-height:56px;display:flex;align-items:center;gap:12px;font-family:var(--display);font-size:22px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";font-family:var(--mono);font-size:17px;color:var(--accent);width:20px;text-align:center}
+details[open] summary::before{content:"\2212"}
+summary .tag{margin-left:auto}
+.inside{padding:4px 0 24px 32px}
+.cues{margin:0;padding:0;list-style:none}
+.cues > li{display:grid;grid-template-columns:56px minmax(0,1fr);gap:0 12px;padding:10px 0;border-top:1px solid var(--line)}
+.cues > li:first-child{border-top:0}
+.cues .tc{font-family:var(--mono);font-size:15px;color:var(--muted);padding-top:2px}
+.made{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 40px}
+.made h3{margin-bottom:8px}
+.made ul{margin:0;padding:0;list-style:none}
+.made li{padding:8px 0;border-top:1px solid var(--line);font-size:15px;color:var(--muted)}
+.made li strong{color:var(--paper);font-weight:500}
 
-/* rundown */
-.deck{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;align-items:start}
-.cues{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
-.cues li{border-top:1px solid var(--line)}
-.cues li:first-child{border-top:0}
-.cue{appearance:none;background:none;border:0;border-left:4px solid transparent;color:inherit;font:inherit;text-align:left;cursor:pointer;width:100%;
-  display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:4px 12px;padding:11px 14px 12px 10px}
-.cue:hover{background:color-mix(in srgb,var(--paper) 6%,transparent)}
-.cue.on{border-left-color:var(--tally-red);background:color-mix(in srgb,var(--tally-red) 9%,transparent)}
-.cue.nx{border-left-color:var(--tally-green)}
-.cue .tc{font-family:var(--mono);font-size:14px;color:var(--paper);display:flex;flex-direction:column;line-height:1.3}
-.cue .tc small{font-size:11px;color:var(--muted);letter-spacing:.1em}
-.cue .slug{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px}
-.cue .lines{display:flex;flex-direction:column;gap:1px}
-.cue .ln{display:block;line-height:1.3}
-.cue .ln i{font-family:var(--mono);font-style:normal;font-size:10.5px;letter-spacing:.12em;color:var(--muted);display:inline-block;width:30px}
-.cue .ln[data-who="p1"]{font-family:var(--mono);font-size:13.5px;color:var(--accent)}
-.cue .ln[data-who="p1"] i{color:var(--accent)}
-.cue .ln[data-who="jay"]{font-family:var(--display);font-size:20px}
-.cue .ln[data-who="card"]{font-family:var(--display);font-style:italic;font-size:20px}
-.cue .ln[data-who="stamp"]{align-self:flex-start;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--accent);border:1px solid var(--accent);padding:0 6px;margin-top:3px}
-.cue .end{display:flex;flex-direction:column;align-items:flex-end;gap:5px;font-family:var(--mono);font-size:12px;color:var(--muted)}
-.cue .end .st{font-size:10.5px;letter-spacing:.12em;min-height:16px}
-.cue.on .end .st{color:var(--tally-red)} .cue.nx .end .st{color:var(--tally-green)}
-.cue .end .st::after{content:"TAKE"} .cue.on .end .st::after{content:"● PGM"} .cue.nx .end .st::after{content:"● PVW"}
-
-/* comms */
-.chain{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
-.chain li{display:grid;grid-template-columns:46px minmax(0,1fr);gap:2px 12px;padding:10px 14px;border-top:1px solid var(--line)}
-.chain li:first-child{border-top:0}
-.chain .key{font-family:var(--mono);font-size:11px;letter-spacing:.1em;border:1px solid var(--line);color:var(--paper);height:26px;display:flex;align-items:center;justify-content:center;margin-top:2px}
-.chain li.top .key{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-.chain .who{font-size:15px;font-weight:500;line-height:1.3}
-.chain .who small{font-family:var(--mono);font-weight:400;font-size:11.5px;color:var(--muted);display:block}
-.chain .to{font-family:var(--mono);font-size:11.5px;color:var(--accent);letter-spacing:.04em}
-.chain p{margin:2px 0 0;font-size:13.5px;color:var(--muted);line-height:1.4}
-
-/* clocks */
-.clocks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line)}
-.clocks div{background:var(--deep);padding:10px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
-.clocks .d{font-family:var(--mono);font-size:24px;line-height:1.1;color:var(--paper);font-variant-numeric:tabular-nums}
-.clocks .d.hot{color:var(--tally-red)}
-.clocks .d small{font-size:12px;color:var(--muted);letter-spacing:.08em}
-
-/* patch bay */
-.bays{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;align-items:start}
-.patch{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);margin:0;padding:0;list-style:none}
-.patch li{background:var(--deep);padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.jack{display:flex;align-items:center;gap:8px}
-.jack::before{content:"";width:18px;height:18px;border-radius:50%;border:3px solid var(--muted);background:radial-gradient(circle,var(--bezel) 0 38%,var(--line) 40% 100%);flex:none}
-.patch li.live .jack::before{border-color:var(--accent)}
-.patch strong{font-weight:500;font-size:16px}
-.patch p{margin:0;font-size:13.5px;line-height:1.4;color:var(--muted)}
-.outs{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
-.outs li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:2px 12px;align-items:baseline;padding:9px 14px;border-top:1px solid var(--line)}
-.outs li:first-child{border-top:0}
-.outs a{font-size:15px;overflow-wrap:anywhere}
-.outs small{display:block;color:var(--muted);font-size:13px;line-height:1.4}
-
-/* notes desk */
-.notes{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
-.notes li{display:grid;grid-template-columns:130px minmax(0,1fr);gap:6px 24px;padding:18px 14px;border-top:1px solid var(--line)}
-.notes li:first-child{border-top:0}
-.notes .k{padding-top:6px}
-.notes h3{font-family:var(--display);font-weight:400;font-size:25px;line-height:1.15;margin:0 0 6px;text-wrap:balance}
-.notes p{margin:0;max-width:65ch;font-size:15.5px}
-
-footer{border-top:1px solid var(--line);padding-top:16px;display:flex;flex-wrap:wrap;gap:6px 24px;justify-content:space-between;font-size:14px;color:var(--muted)}
+footer{margin-top:40px;display:flex;flex-wrap:wrap;gap:4px 28px;align-items:center;justify-content:space-between;font-size:15px;color:var(--muted)}
+footer nav{display:flex;flex-wrap:wrap;gap:0 24px}
+footer a{display:inline-flex;align-items:center;min-height:44px}
 footer strong{color:var(--paper);font-weight:500}
 
-@media (max-width:820px){
-  .ident,.wall,.deck,.bays{grid-template-columns:minmax(0,1fr)}
+@media (max-width:860px){
+  .hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "mon" "reels" "talk";gap:16px;padding-top:20px}
+  .reels{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .made{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:520px){
-  .notes li{grid-template-columns:minmax(0,1fr)} .notes .k{padding-top:0}
-  .cue{grid-template-columns:44px minmax(0,1fr) auto;gap:4px 8px;padding-right:10px}
-  .cue .ln[data-who="jay"],.cue .ln[data-who="card"]{font-size:18px}
+  .bar .where{display:none}
+  .lede{margin-bottom:14px}
+  .notes li{grid-template-columns:28px minmax(0,1fr)}
+  .chan li{grid-template-columns:minmax(0,1fr) auto}
+  .chan .what{grid-column:1;grid-row:2}
+  .chan .st,.chan a{grid-column:2;grid-row:1 / span 2}
+  .inside{padding-left:0}
+  .pubtop .btn{width:100%}
 }
-@media (prefers-reduced-motion: reduce){ .lamp.a::before{animation:none} }
+@media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important;scroll-behavior:auto !important} }
 </style>
 
 <div class="room">
 
-  <div class="bar">
-    <div class="where lbl">
-      <span><b>Jay+1 Gallery</b></span>
-      <span>AIE x MLH Hackathon @ Code Summit</span>
-      <span>Bright Data, 625 2nd St, San Francisco</span>
-      <span>Fri 13 Nov 2026</span>
-    </div>
-    <ul class="lamps" aria-label="Status lights">
-      <li class="lamp g">Cut v2 rendered</li>
-      <li class="lamp g">YouTube: live</li>
-      <li class="lamp r">On air</li>
-    </ul>
-  </div>
-
-  <header class="ident">
-    <h1>One person, <em>plus one</em> intelligence, at a hackathon.</h1>
-    <p><strong>Jay+1 is John Y Miller's show.</strong> He reached the hackathon at 2:04 PM with submissions closing at 3:00. He recorded the room; his plus-one drafted the field notes and cut a film about the hour, 1:21 in full. This is the gallery the film was cut in.</p>
+  <header class="bar">
+    <span class="tag brand">Jay+1 Field Notes</span>
+    <!-- EDIT: event, city, date -->
+    <span class="tag where">AIE x MLH Hackathon · San Francisco · 13 Nov 2026</span>
+    <a class="onair" href="https://youtu.be/xk_UCyKhiY8" target="_blank" rel="noopener">On air on YouTube</a>
   </header>
 
-  <div class="wall">
-    <div class="mon pgm" aria-live="polite">
-      <div class="tag"><b>Program</b><span>Field Notes · cut v2 · 0:31</span></div>
-      <div class="screen" id="pgm" data-kind="talk">
-        <span class="osd tl num" id="pgm-tc">TC 0:00</span>
-        <span class="osd tr" id="pgm-slug">Cold open</span>
-        <span class="osd bl">JAY serif · +1 mono</span>
-        <span class="osd br num" id="pgm-clock">2:04 PM</span>
-        <div class="lines" id="pgm-lines">
-          <span class="ln" data-who="p1"><i>+1</i>Submissions close at 3:00.</span>
-          <span class="ln" data-who="jay"><i>JAY</i>I just arrived.</span>
-          <span class="ln" data-who="p1"><i>+1</i>You have no project.</span>
-          <span class="ln" data-who="jay"><i>JAY</i>Let's discuss ideas.</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="side">
-      <div class="mon pvw">
-        <div class="tag"><b>Preview</b><span>Next cue</span></div>
-        <div class="screen" id="pvw" data-kind="title">
-          <span class="osd tl num" id="pvw-tc">TC 0:08</span>
-          <span class="osd tr" id="pvw-slug">Title</span>
-          <span class="osd br num" id="pvw-clock"></span>
-          <div class="lines" id="pvw-lines">
-            <span class="ln" data-who="card">Jay+1 Field Notes</span>
-          </div>
+  <main>
+    <div class="hero">
+      <div class="head">
+        <h1>One person, <em>plus one</em> intelligence, at a hackathon.</h1>
+        <!-- EDIT: the one-sentence story -->
+        <p class="lede">John Y Miller walked in at 2:04 PM. Submissions closed at 3:00. He recorded the room; his plus-one, an AI, wrote the field notes and cut the film.</p>
+        <div class="acts">
+          <button type="button" class="btn" id="play">Play the film · 1:21</button>
+          <a href="#notes">Read the five notes</a>
         </div>
       </div>
 
-      <section class="panel" aria-labelledby="h-stack">
-        <div class="hd"><h2 id="h-stack">Playout stack</h2><span class="lbl">3 cuts</span></div>
-        <ul class="stack">
-          <li><span class="v">v0</span><span class="t">Bumper<small>10 s</small></span><span class="chip">Shelved</span></li>
-          <li><span class="v">v1</span><span class="t">Slideshow cut<small>30 s. John's note: "declarative".</small></span><span class="chip amber">Rejected</span></li>
-          <li><span class="v">v2</span><span class="t">Two-hander<small>31 s. JAY and the +1 trade lines against the clock.</small></span><span class="chip red">Program</span></li>
+      <figure class="mon">
+        <figcaption class="tag"><b>Program</b><span id="now" aria-live="polite">The full film · 1:21</span></figcaption>
+        <!-- EDIT: poster and reels -->
+        <video id="player" controls playsinline preload="metadata" poster="media/poster.jpg" src="media/full-film.mp4" aria-label="Jay+1 Field Notes film"></video>
+      </figure>
+
+      <ul class="reels" id="reels" aria-label="Reels: choose what plays on the program monitor">
+        <li><button type="button" class="reel" aria-pressed="true" data-src="media/full-film.mp4" data-name="The full film">The full film <span class="num">1:21</span></button></li>
+        <li><button type="button" class="reel" aria-pressed="false" data-src="media/directors-cut.mp4" data-name="Director's cut">Director&rsquo;s cut <span class="num">0:34</span></button></li>
+        <li><button type="button" class="reel" aria-pressed="false" data-src="media/opening.mp4" data-name="Movie opening">Movie opening <span class="num">0:14</span></button></li>
+        <li><button type="button" class="reel" aria-pressed="false" data-src="media/using-the-app.mp4" data-name="Using the app">Using the app <span class="num">0:08</span></button></li>
+        <li><button type="button" class="reel" aria-pressed="false" data-src="media/library-ending.mp4" data-name="Filed in the library">Filed in the library <span class="num">0:10</span></button></li>
+        <li><button type="button" class="reel" aria-pressed="false" data-src="media/closing.mp4" data-name="Closing credits">Closing credits <span class="num">0:16</span></button></li>
+      </ul>
+
+      <!-- EDIT: the cold open -->
+      <figure class="talk" aria-label="How the film opens">
+        <ul class="lines">
+          <li class="ln" data-who="p1"><i>+1</i><span>Submissions close at 3:00.</span></li>
+          <li class="ln" data-who="jay"><i>JAY</i><span>I just arrived.</span></li>
+          <li class="ln" data-who="p1"><i>+1</i><span>You have no project.</span></li>
+          <li class="ln" data-who="jay"><i>JAY</i><span>Let&rsquo;s discuss ideas.</span></li>
         </ul>
-      </section>
+      </figure>
     </div>
-  </div>
 
-  <section class="panel" aria-labelledby="h-scr">
-    <div class="hd"><h2 id="h-scr">Screening room</h2><span class="lbl">Every reel made at the hackathon</span></div>
-    <div class="bd">
-      <div class="scr">
-        <video id="player" controls playsinline preload="metadata" poster="media/poster.jpg" src="media/full-film.mp4"></video>
-        <ul class="reels" id="reels">
-          <li><button type="button" class="reel" aria-pressed="true" data-src="media/full-film.mp4">The full film <span>1:21</span></button></li>
-          <li><button type="button" class="reel" aria-pressed="false" data-src="media/opening.mp4">Movie opening <span>0:14</span></button></li>
-          <li><button type="button" class="reel" aria-pressed="false" data-src="media/directors-cut.mp4">Director&rsquo;s cut <span>0:34</span></button></li>
-          <li><button type="button" class="reel" aria-pressed="false" data-src="media/using-the-app.mp4">Using the app <span>0:08</span></button></li>
-          <li><button type="button" class="reel" aria-pressed="false" data-src="media/library-ending.mp4">Filed in the library <span>0:10</span></button></li>
-          <li><button type="button" class="reel" aria-pressed="false" data-src="media/closing.mp4">Closing credits <span>0:16</span></button></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="panel" aria-labelledby="h-dist">
-    <div class="hd"><h2 id="h-dist">Distribution desk</h2><span class="lbl">Demo mode · only YouTube is real</span></div>
-    <div class="bd">
-      <div class="distbar">
-        <p>One film, every channel. YouTube is live. The other buttons show how publishing will work; in this demo they send nothing.</p>
-        <button type="button" class="go all" id="go-all">Publish everywhere</button>
-      </div>
-      <div class="dist" id="dist">
-        <div class="ch" data-state="live"><div class="top"><span class="nm">YouTube</span><span class="st">Live</span></div><div class="bar"><i></i></div><small>Jay+1 channel. The film is up.</small><a class="go" href="https://youtu.be/xk_UCyKhiY8" target="_blank" rel="noopener">Watch the film</a></div>
-        <div class="ch" data-state="ready"><div class="top"><span class="nm">Milbird.com</span><span class="st">Ready</span></div><div class="bar"><i></i></div><small>File it in the hackathon library as record 22.</small><button type="button" class="go" id="ch-milbird" data-done="Filed (demo)">Add to Milbird.com</button></div>
-        <div class="ch" data-state="ready"><div class="top"><span class="nm">Instagram</span><span class="st">Ready</span></div><div class="bar"><i></i></div><small>Vertical recut as a Reel, captions burned in.</small><button type="button" class="go" id="ch-ig" data-done="Posted (demo)">Post Reel</button></div>
-        <div class="ch" data-state="ready"><div class="top"><span class="nm">TikTok</span><span class="st">Ready</span></div><div class="bar"><i></i></div><small>Same vertical cut, cold open first.</small><button type="button" class="go" id="ch-tt" data-done="Posted (demo)">Post to TikTok</button></div>
-        <div class="ch" data-state="ready"><div class="top"><span class="nm">LinkedIn</span><span class="st">Ready</span></div><div class="bar"><i></i></div><small>Landscape cut with the field notes as the post.</small><button type="button" class="go" id="ch-li" data-done="Posted (demo)">Post to LinkedIn</button></div>
-        <div class="ch" data-state="ready"><div class="top"><span class="nm">X</span><span class="st">Ready</span></div><div class="bar"><i></i></div><small>Thirty seconds, one line, one link.</small><button type="button" class="go" id="ch-x" data-done="Posted (demo)">Post to X</button></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="panel" aria-labelledby="h-tl">
-    <div class="hd"><h2 id="h-tl">Timeline</h2><span class="lbl">Cut v2 · 8 cues · to scale</span></div>
-    <div class="bd">
-      <div class="tl" id="tl" aria-hidden="true">
-        <span class="on" style="flex-grow:8">1</span><span class="nx" style="flex-grow:2">2</span><span style="flex-grow:4">3</span><span style="flex-grow:2">4</span><span style="flex-grow:3">5</span><span style="flex-grow:4">6</span><span style="flex-grow:3">7</span><span style="flex-grow:5">8</span>
-      </div>
-      <div class="tlx num"><span>0:00</span><span>0:31</span></div>
-    </div>
-  </section>
-
-  <div class="deck">
-    <section class="panel" aria-labelledby="h-run">
-      <div class="hd"><h2 id="h-run">Rundown</h2><span class="lbl">Select a cue to take it to program</span></div>
-      <ol class="cues" id="cues">
-        <li><button type="button" class="cue on" aria-pressed="true" data-tc="0:00" data-slug="Cold open" data-kind="talk" data-clock="2:04 PM">
-          <span class="tc num">0:00<small>CUE 1</small></span>
-          <span><span class="slug">Cold open</span><span class="lines"><span class="ln" data-who="p1"><i>+1</i>Submissions close at 3:00.</span><span class="ln" data-who="jay"><i>JAY</i>I just arrived.</span><span class="ln" data-who="p1"><i>+1</i>You have no project.</span><span class="ln" data-who="jay"><i>JAY</i>Let's discuss ideas.</span></span></span>
-          <span class="end num">8 s<span class="st"></span></span>
-        </button></li>
-        <li><button type="button" class="cue nx" aria-pressed="false" data-tc="0:08" data-slug="Title" data-kind="title" data-clock="">
-          <span class="tc num">0:08<small>CUE 2</small></span>
-          <span><span class="slug">Title</span><span class="lines"><span class="ln" data-who="card">Jay+1 Field Notes</span></span></span>
-          <span class="end num">2 s<span class="st"></span></span>
-        </button></li>
-        <li><button type="button" class="cue" aria-pressed="false" data-tc="0:10" data-slug="The Mark · freeze frame" data-kind="mark" data-clock="">
-          <span class="tc num">0:10<small>CUE 3</small></span>
-          <span><span class="slug">The Mark · freeze frame on the prize camera</span><span class="lines"><span class="ln" data-who="jay"><i>JAY</i>I want that camera.</span><span class="ln" data-who="stamp">THE MARK</span></span></span>
-          <span class="end num">4 s<span class="st"></span></span>
-        </button></li>
-        <li><button type="button" class="cue" aria-pressed="false" data-tc="0:14" data-slug="Human check" data-kind="talk" data-clock="">
-          <span class="tc num">0:14<small>CUE 4</small></span>
-          <span><span class="slug">Human check</span><span class="lines"><span class="ln" data-who="p1"><i>+1</i>MLH will not confirm you are human.</span><span class="ln" data-who="jay"><i>JAY</i>Fair.</span></span></span>
-          <span class="end num">2 s<span class="st"></span></span>
-        </button></li>
-        <li><button type="button" class="cue" aria-pressed="false" data-tc="0:16" data-slug="Clock" data-kind="talk" data-clock="39 min left">
-          <span class="tc num">0:16<small>CUE 5</small></span>
-          <span><span class="slug">Clock</span><span class="lines"><span class="ln" data-who="p1"><i>+1</i>Thirty-nine minutes.</span><span class="ln" data-who="jay"><i>JAY</i>Don't care about the clock.</span></span></span>
-          <span class="end num">3 s<span class="st"></span></span>
-        </button></li>
-        <li><button type="button" class="cue" aria-pressed="false" data-tc="0:19" data-slug="Montage" data-kind="montage" data-clock="">
-          <span class="tc num">0:19<small>CUE 6</small></span>
-          <span><span class="slug">Montage</span><span class="lines"><span class="ln" data-who="card">Record. Draft. Cut. Render.</span></span></span>
-          <span class="end num">4 s<span class="st"></span></span>
-        </button></li>
-        <li><button type="button" class="cue" aria-pressed="false" data-tc="0:23" data-slug="Payoff" data-kind="talk" data-clock="3:00 PM">
-          <span class="tc num">0:23<small>CUE 7</small></span>
-          <span><span class="slug">Payoff</span><span class="lines"><span class="ln" data-who="jay"><i>JAY</i>Done. Sixty minutes.</span><span class="ln" data-who="p1"><i>+1</i>You never built a project.</span><span class="ln" data-who="jay"><i>JAY</i>You're watching it.</span></span></span>
-          <span class="end num">3 s<span class="st"></span></span>
-        </button></li>
-        <li><button type="button" class="cue" aria-pressed="false" data-tc="0:26" data-slug="End card" data-kind="end" data-clock="">
-          <span class="tc num">0:26<small>CUE 8</small></span>
-          <span><span class="slug">End card</span><span class="lines"><span class="ln" data-who="p1"><i>+1:</i> I did most of it.</span></span></span>
-          <span class="end num">5 s<span class="st"></span></span>
-        </button></li>
+    <section class="blk" id="notes" aria-labelledby="h-notes">
+      <div class="hd"><h2 id="h-notes">Field notes</h2><span class="tag">What the room taught</span></div>
+      <!-- EDIT: the notes -->
+      <ol class="notes">
+        <li><div>
+          <h3>The video prize judges the film, so the film can be about anything you built.</h3>
+          <p>HyperFrames makes video from HTML. Its own creative team uses it where they used to open After Effects. The project in the film does not have to use HyperFrames; only the film does.</p>
+        </div></li>
+        <li><div>
+          <h3>Talk to it like a director.</h3>
+          <p>The advice from the HyperFrames table: the more film vocabulary you bring (shots, cuts, pacing), the better the result. Creative people get the most out of it. Their launch film is the reference for what good looks like.</p>
+        </div></li>
+        <li><div>
+          <h3>The word &ldquo;hackathon&rdquo; does not travel well.</h3>
+          <p>MLH grew up with students and is moving toward working professionals who need to learn AI. In some cities the public hears &ldquo;hackathon&rdquo; and thinks of break-ins, so the name itself gets tested.</p>
+        </div></li>
+        <li><div>
+          <h3>A dossier is a good test of a software factory.</h3>
+          <p>One challenge on the floor: give the system a company name, get back a short dossier with the chief executive and five or six facts. The hard part is how you arrange the prompts and roles so the result is reliably good. John&rsquo;s own factory needs the same work.</p>
+        </div></li>
+        <li><div>
+          <h3>For a solo operator, taste is the only thing that sets the work apart.</h3>
+          <p>That is why the notes become a film. John is moving from an audio podcast to video, and wants bumpers and chapter cards across his whole library. This hackathon is the first one made that way.</p>
+        </div></li>
       </ol>
     </section>
 
-    <div class="side">
-      <section class="panel" aria-labelledby="h-clk">
-        <div class="hd"><h2 id="h-clk">Clocks</h2><span class="lbl">Pacific time</span></div>
-        <div class="clocks">
-          <div><span class="lbl">Arrival</span><span class="d">2:04 <small>PM</small></span></div>
-          <div><span class="lbl">Deadline</span><span class="d hot">3:00 <small>PM</small></span></div>
-          <div><span class="lbl">Film runs</span><span class="d">0:31</span></div>
-          <div><span class="lbl">One render</span><span class="d">~20 <small>SEC</small></span></div>
-        </div>
-      </section>
+    <section class="blk" id="publish" aria-labelledby="h-pub">
+      <div class="hd"><h2 id="h-pub">Send it out</h2><span class="tag">Demo · only YouTube is real</span></div>
+      <div class="pubtop">
+        <p id="pubsay" aria-live="polite">One film, every channel. YouTube is live. The rest is a demo of how publishing will work: pressing the button sends nothing.</p>
+        <button type="button" class="btn quiet" id="demo">Run the publish demo</button>
+      </div>
+      <!-- EDIT: channels -->
+      <ul class="chan" id="chan">
+        <li data-state="live"><span class="nm">YouTube</span><span class="what">The film is up on the Jay+1 channel.</span><a href="https://youtu.be/xk_UCyKhiY8" target="_blank" rel="noopener">Watch on YouTube</a></li>
+        <li data-state="demo"><span class="nm">Milbird.com</span><span class="what">Filed in the hackathon library.</span><span class="st">Demo</span></li>
+        <li data-state="demo"><span class="nm">Instagram</span><span class="what">Vertical recut as a Reel, captions burned in.</span><span class="st">Demo</span></li>
+        <li data-state="demo"><span class="nm">TikTok</span><span class="what">Same vertical cut, cold open first.</span><span class="st">Demo</span></li>
+        <li data-state="demo"><span class="nm">LinkedIn</span><span class="what">Landscape cut, with the field notes as the post.</span><span class="st">Demo</span></li>
+        <li data-state="demo"><span class="nm">X</span><span class="what">Thirty seconds, one line, one link.</span><span class="st">Demo</span></li>
+      </ul>
+    </section>
 
-      <section class="panel" aria-labelledby="h-com">
-        <div class="hd"><h2 id="h-com">Crew and comms</h2><span class="lbl">Who reports to whom</span></div>
-        <ol class="chain">
-          <li class="top"><span class="key">JAY</span><div><span class="who">John Y Miller<small>Host, on the floor</small></span><p>Walks the room, records, and has the last word on every cut.</p></div></li>
-          <li><span class="key">PROD</span><div><span class="who">Producer session<small>Claude Fable 5.2</small></span><span class="to">reports to John</span><p>Runs the show: field notes, this page, and the crew below.</p></div></li>
-          <li><span class="key">DIR</span><div><span class="who">Director session<small>Claude Opus 5.5</small></span><span class="to">reports to the producer</span><p>Final judge on what goes in the film.</p></div></li>
-          <li><span class="key">EDIT</span><div><span class="who">Editor session<small>Claude Opus 5.5</small></span><span class="to">cuts go to the director</span><p>Writes the film as HTML and renders each cut.</p></div></li>
-        </ol>
-      </section>
+    <div class="drawers">
+      <details>
+        <summary>The script <span class="tag">The two-hander · 8 cues</span></summary>
+        <div class="inside">
+          <!-- EDIT: the script -->
+          <ol class="cues">
+            <li><span class="tc num">0:00</span><ul class="lines"><li class="ln" data-who="p1"><i>+1</i><span>Submissions close at 3:00.</span></li><li class="ln" data-who="jay"><i>JAY</i><span>I just arrived.</span></li><li class="ln" data-who="p1"><i>+1</i><span>You have no project.</span></li><li class="ln" data-who="jay"><i>JAY</i><span>Let&rsquo;s discuss ideas.</span></li></ul></li>
+            <li><span class="tc num">0:08</span><ul class="lines"><li class="ln" data-who="card"><i>CARD</i><span>Jay+1 Field Notes</span></li></ul></li>
+            <li><span class="tc num">0:10</span><ul class="lines"><li class="ln" data-who="jay"><i>JAY</i><span>I want that camera.</span></li><li class="ln" data-who="card"><i>CARD</i><span>The Mark. Freeze frame on the prize camera.</span></li></ul></li>
+            <li><span class="tc num">0:14</span><ul class="lines"><li class="ln" data-who="p1"><i>+1</i><span>MLH will not confirm you are human.</span></li><li class="ln" data-who="jay"><i>JAY</i><span>Fair.</span></li></ul></li>
+            <li><span class="tc num">0:16</span><ul class="lines"><li class="ln" data-who="p1"><i>+1</i><span>Thirty-nine minutes.</span></li><li class="ln" data-who="jay"><i>JAY</i><span>Don&rsquo;t care about the clock.</span></li></ul></li>
+            <li><span class="tc num">0:19</span><ul class="lines"><li class="ln" data-who="card"><i>CARD</i><span>Record. Draft. Cut. Render.</span></li></ul></li>
+            <li><span class="tc num">0:23</span><ul class="lines"><li class="ln" data-who="jay"><i>JAY</i><span>Done. Sixty minutes.</span></li><li class="ln" data-who="p1"><i>+1</i><span>You never built a project.</span></li><li class="ln" data-who="jay"><i>JAY</i><span>You&rsquo;re watching it.</span></li></ul></li>
+            <li><span class="tc num">0:26</span><ul class="lines"><li class="ln" data-who="p1"><i>+1</i><span>I did most of it.</span></li></ul></li>
+          </ol>
+        </div>
+      </details>
+      <details>
+        <summary>How it was made <span class="tag">Crew and kit</span></summary>
+        <div class="inside made">
+          <!-- EDIT: crew and kit -->
+          <div>
+            <h3>Crew</h3>
+            <ul>
+              <li><strong>John Y Miller, host.</strong> Walks the room, records, and has the last word on every cut.</li>
+              <li><strong>Producer, Claude Fable 5.2.</strong> Runs the show: the field notes, this page, and the crew below.</li>
+              <li><strong>Director, Claude Opus 5.5.</strong> Final judge on what goes in the film.</li>
+              <li><strong>Editor, Claude Opus 5.5.</strong> Writes the film as HTML and renders each cut.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Kit</h3>
+            <ul>
+              <li><strong>Granola.</strong> Records the conversations John has in the room.</li>
+              <li><strong>iPhone.</strong> Photos and video from the floor, the prize camera included.</li>
+              <li><strong>Claude Code.</strong> The plus-one. Drafts the notes and writes the film as HTML.</li>
+              <li><strong>HyperFrames.</strong> Renders the HTML to video, about 20 seconds a render.</li>
+              <li><strong>ffmpeg.</strong> Media handling for the cut.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
     </div>
-  </div>
-
-  <div class="bays">
-    <section class="panel" aria-labelledby="h-patch">
-      <div class="hd"><h2 id="h-patch">Sources · patch bay</h2><span class="lbl">5 inputs</span></div>
-      <ul class="patch">
-        <li class="live"><span class="jack lbl">In 1</span><strong>Granola</strong><p>Records the conversations John has in the room.</p></li>
-        <li class="live"><span class="jack lbl">In 2</span><strong>iPhone</strong><p>Photos and video from the floor, the prize camera included.</p></li>
-        <li class="live"><span class="jack lbl">In 3</span><strong>Claude Code</strong><p>The plus-one. Drafts the notes and writes the film as HTML.</p></li>
-        <li class="live"><span class="jack lbl">In 4</span><strong>HyperFrames</strong><p>Renders the HTML to video, about 20 seconds a render.</p></li>
-        <li class="live"><span class="jack lbl">In 5</span><strong>ffmpeg</strong><p>Media handling for the cut.</p></li>
-      </ul>
-    </section>
-
-    <section class="panel" aria-labelledby="h-out">
-      <div class="hd"><h2 id="h-out">Router · outputs</h2><span class="lbl">Where it goes</span></div>
-      <ul class="outs">
-        <li><span class="lbl">Out 1</span><div><a href="https://www.youtube.com/@jayplusone" target="_blank" rel="noopener">youtube.com/@jayplusone</a><small>The Jay+1 channel. The film is live: <a href="https://youtu.be/xk_UCyKhiY8" target="_blank" rel="noopener">youtu.be/xk_UCyKhiY8</a>.</small></div></li>
-        <li><span class="lbl">Out 2</span><div><a href="https://github.com/jymiller/hack-mlh-nov13" target="_blank" rel="noopener">github.com/jymiller/hack-mlh-nov13</a><small>Source for the film and this page.</small></div></li>
-        <li><span class="lbl">Event</span><div><a href="https://www.mlh.com/events/aie-x-mlh-hackathon-code-summit" target="_blank" rel="noopener">AIE x MLH Hackathon @ Code Summit</a><small>Major League Hacking. Where this was built and submitted.</small></div></li>
-        <li><span class="lbl">Out 3</span><div><a href="https://milbird.com/hackathons" target="_blank" rel="noopener">The Milbird Lab</a><small>John's hackathon projects and AI experiments.</small></div></li>
-        <li><span class="lbl">Out 4</span><div><a href="https://milbird.com/field-notes" target="_blank" rel="noopener">Milbird Field Notes</a><small>Field reports from earlier rooms:
-          <a href="https://milbird.com/field-notes/ai-agents-data-teams-september-28" target="_blank" rel="noopener">28 Sep</a>,
-          <a href="https://milbird.com/field-notes/party-build-october-7" target="_blank" rel="noopener">7 Oct</a>,
-          <a href="https://milbird.com/field-notes/dama-days-october-9" target="_blank" rel="noopener">9 Oct</a>,
-          <a href="https://milbird.com/field-notes/party-build-october-10" target="_blank" rel="noopener">10 Oct</a>.</small></div></li>
-      </ul>
-    </section>
-  </div>
-
-  <section class="panel" aria-labelledby="h-notes">
-    <div class="hd"><h2 id="h-notes">Notes desk</h2><span class="lbl">What the room taught · two conversations</span></div>
-    <ul class="notes">
-      <li>
-        <span class="k lbl">On video</span>
-        <div>
-          <h3>The video prize judges the film, so the film can be about anything you built.</h3>
-          <p>HyperFrames makes video from HTML. Its own creative team uses it where they used to open After Effects. The project in the film does not have to use HyperFrames; only the film does.</p>
-        </div>
-      </li>
-      <li>
-        <span class="k lbl">On craft</span>
-        <div>
-          <h3>Talk to it like a director.</h3>
-          <p>The advice from the HyperFrames table: the more film vocabulary you bring (shots, cuts, pacing), the better the result. Creative people get the most out of it. Their launch film is the reference for what good looks like.</p>
-        </div>
-      </li>
-      <li>
-        <span class="k lbl">On MLH</span>
-        <div>
-          <h3>The word "hackathon" does not travel well.</h3>
-          <p>MLH grew up with students and is moving toward working professionals who need to learn AI. In some cities the public hears "hackathon" and thinks of break-ins, so the name itself gets tested.</p>
-        </div>
-      </li>
-      <li>
-        <span class="k lbl">On factories</span>
-        <div>
-          <h3>A dossier is a good test of a software factory.</h3>
-          <p>One challenge on the floor: give the system a company name, get back a short dossier with the chief executive and five or six facts. The hard part is how you arrange the prompts and roles so the result is reliably good. John's own factory needs the same work.</p>
-        </div>
-      </li>
-      <li>
-        <span class="k lbl">On taste</span>
-        <div>
-          <h3>For a solo operator, taste is the only thing that sets the work apart.</h3>
-          <p>That is why the notes become a film. John is moving from an audio podcast to video, and wants bumpers and chapter cards across his whole library. This hackathon is the first one made that way.</p>
-        </div>
-      </li>
-    </ul>
-  </section>
+  </main>
 
   <footer>
-    <span><strong>Jay+1</strong> · a Milbird production</span>
-    <span>Notes drafted by Claude from John's recordings, 13 Nov 2026</span>
+    <span><strong>Jay+1</strong> · a Milbird production · notes drafted by Claude from John&rsquo;s recordings</span>
+    <nav aria-label="Links">
+      <a href="https://www.youtube.com/@jayplusone" target="_blank" rel="noopener">YouTube channel</a>
+      <a href="https://github.com/jymiller/hack-mlh-nov13" target="_blank" rel="noopener">Source on GitHub</a>
+      <a href="https://www.mlh.com/events/aie-x-mlh-hackathon-code-summit" target="_blank" rel="noopener">The event</a>
+      <a href="https://milbird.com/hackathons" target="_blank" rel="noopener">Hackathon library</a>
+    </nav>
   </footer>
 </div>
 
 <script>
 (function(){
-  var cues = Array.prototype.slice.call(document.querySelectorAll('#cues .cue'));
-  var segs = document.querySelectorAll('#tl span');
-  function show(prefix, cue){
-    var screen = document.getElementById(prefix);
-    screen.dataset.kind = cue.dataset.kind;
-    document.getElementById(prefix + '-tc').textContent = 'TC ' + cue.dataset.tc;
-    document.getElementById(prefix + '-slug').textContent = cue.dataset.slug;
-    document.getElementById(prefix + '-clock').textContent = cue.dataset.clock;
-    document.getElementById(prefix + '-lines').innerHTML = cue.querySelector('.lines').innerHTML;
-  }
-  function take(i){
-    var n = (i + 1) % cues.length;
-    cues.forEach(function(c, k){
-      c.classList.toggle('on', k === i);
-      c.classList.toggle('nx', k === n);
-      c.setAttribute('aria-pressed', k === i ? 'true' : 'false');
-      if (segs[k]) { segs[k].classList.toggle('on', k === i); segs[k].classList.toggle('nx', k === n); }
-    });
-    show('pgm', cues[i]);
-    show('pvw', cues[n]);
-  }
-  cues.forEach(function(c, i){ c.addEventListener('click', function(){ take(i); }); });
-})();
-(function(){
-  var btns = Array.prototype.slice.call(document.querySelectorAll('#dist button.go'));
-  function send(b){
-    if (b.disabled) return;
-    var ch = b.closest('.ch'), st = ch.querySelector('.st');
-    b.disabled = true; ch.dataset.state = 'queued'; st.textContent = 'Queued'; b.textContent = 'Queued';
-    setTimeout(function(){ ch.dataset.state = 'sending'; st.textContent = 'Sending'; b.textContent = 'Sending'; }, 350);
-    setTimeout(function(){ ch.dataset.state = 'sent'; st.textContent = 'Demo'; b.textContent = b.dataset.done; }, 1600);
-  }
-  btns.forEach(function(b){ b.addEventListener('click', function(){ send(b); }); });
-  var all = document.getElementById('go-all');
-  all.addEventListener('click', function(){
-    btns.forEach(function(b, i){ setTimeout(function(){ send(b); }, i * 260); });
-    all.disabled = true; all.textContent = 'Published everywhere (demo)';
+  var v = document.getElementById('player'), now = document.getElementById('now');
+  var rs = Array.prototype.slice.call(document.querySelectorAll('#reels .reel'));
+  function play(){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+  rs.forEach(function(b){ b.addEventListener('click', function(){
+    rs.forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    now.textContent = b.dataset.name + ' · ' + b.querySelector('span').textContent;
+    v.removeAttribute('poster'); v.src = b.dataset.src; v.load(); play();
+  }); });
+  document.getElementById('play').addEventListener('click', function(){
+    if (rs[0].getAttribute('aria-pressed') !== 'true') rs[0].click(); else play();
+    v.scrollIntoView({block:'center'}); v.focus({preventScroll:true});
   });
 })();
 (function(){
-  var v = document.getElementById('player');
-  var rs = Array.prototype.slice.call(document.querySelectorAll('#reels .reel'));
-  rs.forEach(function(b){ b.addEventListener('click', function(){
-    rs.forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-    v.removeAttribute('poster'); v.src = b.dataset.src; v.load();
-    var p = v.play(); if (p && p.catch) p.catch(function(){});
-  }); });
+  var btn = document.getElementById('demo'), say = document.getElementById('pubsay');
+  var rows = Array.prototype.slice.call(document.querySelectorAll('#chan li[data-state="demo"]'));
+  var start = say.textContent, timers = [], done = false;
+  function set(li, state, text){ li.dataset.state = state; li.querySelector('.st').textContent = text; }
+  btn.addEventListener('click', function(){
+    timers.forEach(clearTimeout); timers = [];
+    if (done){ rows.forEach(function(li){ set(li, 'demo', 'Demo'); }); say.textContent = start; btn.textContent = 'Run the publish demo'; done = false; return; }
+    btn.disabled = true;
+    rows.forEach(function(li, i){
+      timers.push(setTimeout(function(){ set(li, 'sending', 'Sending'); }, i * 300));
+      timers.push(setTimeout(function(){ set(li, 'sent', 'Sent (demo)'); }, i * 300 + 900));
+    });
+    timers.push(setTimeout(function(){
+      say.textContent = 'Demo finished. Nothing left this page; only YouTube is really published.';
+      btn.textContent = 'Reset the demo'; btn.disabled = false; done = true;
+    }, rows.length * 300 + 900));
+  });
 })();
 </script>
